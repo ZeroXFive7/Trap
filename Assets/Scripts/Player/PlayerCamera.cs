@@ -9,6 +9,8 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField]
     private float pitchSpeed;
     [SerializeField]
+    private float minYawAngle;
+    [SerializeField]
     private bool invertHorizontal = false;
     [SerializeField]
     private bool invertVertical = false;
@@ -83,12 +85,23 @@ public class PlayerCamera : MonoBehaviour
             }
             transform.Rotate(Vector3.up * playerRotation, Space.Self);
 
+            Vector3 previousPosition = camera.transform.position;
+            Quaternion previousRotation = camera.transform.rotation;
+
             float cameraRotation = -Input.GetAxis(pitchInputAxis) * pitchSpeed * Time.deltaTime;
             if (invertVertical)
             {
                 cameraRotation *= -1.0f;
             }
             camera.transform.RotateAround(transform.position, transform.right, cameraRotation);
+
+            // Avoid gimble lock by disallowing rotations that align forward vector with world up.
+            float angleFromY = Vector3.Angle(camera.transform.forward, Vector3.up);
+            if (angleFromY < minYawAngle || angleFromY > 180.0f - minYawAngle)
+            {
+                camera.transform.position = previousPosition;
+                camera.transform.rotation = previousRotation;
+            }
         }
     }
 
@@ -96,27 +109,27 @@ public class PlayerCamera : MonoBehaviour
     {
         isThirdPerson = thirdPerson;
 
-        StartCoroutine(
-            RunUpdatePerspective(
-                thirdPerson ? thirdPersonCameraOffset : firstPersonCameraOffset,
-                snap ? 0.0f : perspectiveTransitionTime)
-                );
+        Vector3 initialOffset = thirdPerson ? firstPersonCameraOffset : thirdPersonCameraOffset;
+        Vector3 targetOffset = thirdPerson ? thirdPersonCameraOffset : firstPersonCameraOffset;
+        float transitionTime = snap ? 0.0f : perspectiveTransitionTime;
+        StartCoroutine(RunUpdatePerspective(initialOffset, targetOffset, transitionTime));
     }
 
-    private IEnumerator RunUpdatePerspective(Vector3 targetCameraOffset, float duration)
+    private IEnumerator RunUpdatePerspective(Vector3 initialCameraOffset, Vector3 targetCameraOffset, float duration)
     {
         perspectiveIsTransitioning = true;
-
-        Vector3 initialOffset = camera.transform.localPosition;
 
         float timer = 0.0f;
         while (timer < duration)
         {
-            camera.transform.localPosition = Vector3.Lerp(initialOffset, targetCameraOffset, timer / perspectiveTransitionTime);
+            Vector3 initial = camera.transform.TransformDirection(initialCameraOffset);
+            Vector3 final = camera.transform.TransformDirection(targetCameraOffset);
+
+            camera.transform.position = transform.position + Vector3.Lerp(initial, final, timer / perspectiveTransitionTime);
             yield return new WaitForSeconds(Time.deltaTime);
             timer += Time.deltaTime;
         }
-        camera.transform.localPosition = targetCameraOffset;
+        camera.transform.position = transform.position + camera.transform.TransformDirection(targetCameraOffset);
 
         perspectiveIsTransitioning = false;
     }

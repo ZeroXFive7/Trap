@@ -198,6 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   yawSpeed: 200
   pitchSpeed: 200
+  minYawAngle: 10
   invertHorizontal: 0
   invertVertical: 0
   firstPersonCameraOffset: {x: 0, y: 2, z: 0}
