@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 401280}
   - 114: {fileID: 11433726}
+  - 114: {fileID: 11455798}
   - 114: {fileID: 11488934}
   - 114: {fileID: 11453056}
   m_Layer: 0
@@ -183,8 +184,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c9a3dbf02b7bb2439ad6bb7aa68429a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  input: {fileID: 11455798}
   movement: {fileID: 11488934}
-  camera: {fileID: 0}
+  camera: {fileID: 11453056}
 --- !u!114 &11453056
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -205,10 +207,31 @@ MonoBehaviour:
   thirdPersonCameraOffset: {x: 0, y: 2, z: -8}
   perspectiveTransitionTime: .100000001
   defaultThirdPerson: 1
+  player: {fileID: 11433726}
   camera: {fileID: 439784}
-  yawInputAxis: Mouse X
-  pitchInputAxis: Mouse Y
-  zoomInputAxis: Fire2
+--- !u!114 &11455798
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 103034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4e0502b49663084d894fd3229d49893, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controllerConfig:
+    MovementHorizontalAxisName: MovementHorizontalController
+    MovementVerticalAxisName: MovementVerticalController
+    LookHorizontalAxisName: LookHorizontalController
+    LookVerticalAxisName: LookVerticalController
+    AimDownSightsAxisName: AimDownSightsController
+  keyboardMouseConfig:
+    MovementHorizontalAxisName: MovementHorizontalKeyboardMouse
+    MovementVerticalAxisName: MovementVerticalKeyboardMouse
+    LookHorizontalAxisName: LookHorizontalKeyboardMouse
+    LookVerticalAxisName: LookVerticalKeyboardMouse
+    AimDownSightsAxisName: AimDownSightsKeyboardMouse
 --- !u!114 &11488934
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -221,8 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  horizontalInputAxis: Horizontal
-  forwardInputAxis: Vertical
+  player: {fileID: 11433726}
 --- !u!124 &12418572
 Behaviour:
   m_ObjectHideFlags: 1

@@ -27,15 +27,9 @@ public class PlayerCamera : MonoBehaviour
 
     [Header("Component References")]
     [SerializeField]
+    private Player player;
+    [SerializeField]
     private new Transform camera;
-
-    [Header("Input Settings")]
-    [SerializeField]
-    private string yawInputAxis;
-    [SerializeField]
-    private string pitchInputAxis;
-    [SerializeField]
-    private string zoomInputAxis;
 
     private bool isThirdPerson = false;
     private bool perspectiveIsTransitioning = false;
@@ -59,49 +53,46 @@ public class PlayerCamera : MonoBehaviour
             SetCursorState(true);
         }
 
-        if (!Cursor.visible)
+        // Update perspective.
+        if (!perspectiveIsTransitioning)
         {
-            // Update perspective.
-            if (!perspectiveIsTransitioning)
+            bool altPerspectiveInput = player.Input.AimDownSights > 0.0f;
+            bool altPerspectiveActive = (defaultThirdPerson != isThirdPerson);
+
+            if (altPerspectiveInput && !altPerspectiveActive)
             {
-                bool altPerspectiveInput = Input.GetAxis(zoomInputAxis) > 0.0f;
-                bool altPerspectiveActive = (defaultThirdPerson != isThirdPerson);
-
-                if (altPerspectiveInput && !altPerspectiveActive)
-                {
-                    SetPerspective(!defaultThirdPerson);
-                }
-                else if (!altPerspectiveInput && altPerspectiveActive)
-                {
-                    SetPerspective(defaultThirdPerson);
-                }
+                SetPerspective(!defaultThirdPerson);
             }
-
-            // Update camera rotation.
-            float playerRotation = Input.GetAxis(yawInputAxis) * yawSpeed * Time.deltaTime;
-            if (invertHorizontal)
+            else if (!altPerspectiveInput && altPerspectiveActive)
             {
-                playerRotation *= -1.0f;
+                SetPerspective(defaultThirdPerson);
             }
-            transform.Rotate(Vector3.up * playerRotation, Space.Self);
+        }
 
-            Vector3 previousPosition = camera.transform.position;
-            Quaternion previousRotation = camera.transform.rotation;
+        // Update camera rotation.
+        float playerRotation = player.Input.Look.x * yawSpeed * Time.deltaTime;
+        if (invertHorizontal)
+        {
+            playerRotation *= -1.0f;
+        }
+        transform.Rotate(Vector3.up * playerRotation, Space.Self);
 
-            float cameraRotation = -Input.GetAxis(pitchInputAxis) * pitchSpeed * Time.deltaTime;
-            if (invertVertical)
-            {
-                cameraRotation *= -1.0f;
-            }
-            camera.transform.RotateAround(transform.position, transform.right, cameraRotation);
+        Vector3 previousPosition = camera.transform.position;
+        Quaternion previousRotation = camera.transform.rotation;
 
-            // Avoid gimble lock by disallowing rotations that align forward vector with world up.
-            float angleFromY = Vector3.Angle(camera.transform.forward, Vector3.up);
-            if (angleFromY < minYawAngle || angleFromY > 180.0f - minYawAngle)
-            {
-                camera.transform.position = previousPosition;
-                camera.transform.rotation = previousRotation;
-            }
+        float cameraRotation = player.Input.Look.y * pitchSpeed * Time.deltaTime;
+        if (invertVertical)
+        {
+            cameraRotation *= -1.0f;
+        }
+        camera.transform.RotateAround(transform.position, transform.right, cameraRotation);
+
+        // Avoid gimble lock by disallowing rotations that align forward vector with world up.
+        float angleFromY = Vector3.Angle(camera.transform.forward, Vector3.up);
+        if (angleFromY < minYawAngle || angleFromY > 180.0f - minYawAngle)
+        {
+            camera.transform.position = previousPosition;
+            camera.transform.rotation = previousRotation;
         }
     }
 
