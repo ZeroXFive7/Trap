@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private PlayerMovement movement;
     [SerializeField]
-    private new PlayerCamera camera;
+    private PlayerAiming aiming;
 
     public PlayerInput Input
     {
@@ -20,8 +20,8 @@ public class Player : MonoBehaviour
         get { return movement; }
     }
 
-    public PlayerCamera Camera
+    public PlayerAiming Aiming
     {
-        get { return camera; }
+        get { return aiming; }
     }
 }

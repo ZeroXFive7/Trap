@@ -11,6 +11,7 @@ public class PlayerInput : MonoBehaviour
         public string LookHorizontalAxisName;
         public string LookVerticalAxisName;
         public string AimDownSightsAxisName;
+        public string JumpAxisName;
     }
 
     private class InputData
@@ -18,6 +19,7 @@ public class PlayerInput : MonoBehaviour
         public Vector2 Movement = Vector2.zero;
         public Vector2 Look = Vector2.zero;
         public float AimDownSights = 0.0f;
+        public bool Jump = false;
 
         public bool IsEmpty
         {
@@ -27,7 +29,8 @@ public class PlayerInput : MonoBehaviour
                     Movement.y == 0.0f &&
                     Look.x == 0.0f &&
                     Look.y == 0.0f &&
-                    AimDownSights == 0.0f;
+                    AimDownSights == 0.0f &&
+                    Jump == false;
             }
         }
     }
@@ -41,6 +44,8 @@ public class PlayerInput : MonoBehaviour
     private InputData controllerInput = new InputData();
     private InputData keyboardMouseInput = new InputData();
     private InputData currentInput;
+
+    public bool UsingControllerInput { get; private set; }
 
     public Vector2 Movement
     {
@@ -66,6 +71,19 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    public bool Jump
+    {
+        get
+        {
+            return currentInput.Jump;
+        }
+    }
+
+    private void Awake()
+    {
+        UsingControllerInput = false;
+    }
+
     private void Update()
     {
         currentInput = emptyInput;
@@ -75,7 +93,16 @@ public class PlayerInput : MonoBehaviour
             ReadInput(ref controllerInput, controllerConfig);
             ReadInput(ref keyboardMouseInput, keyboardMouseConfig);
 
-            currentInput = (controllerInput.IsEmpty ? keyboardMouseInput : controllerInput);
+            if (UsingControllerInput && !keyboardMouseInput.IsEmpty)
+            {
+                UsingControllerInput = false;
+            }
+            else if (!UsingControllerInput && !controllerInput.IsEmpty)
+            {
+                UsingControllerInput = true;
+            }
+
+            currentInput = (UsingControllerInput ? controllerInput : keyboardMouseInput);
         }
     }
 
@@ -90,5 +117,7 @@ public class PlayerInput : MonoBehaviour
             Input.GetAxis(config.LookVerticalAxisName));
 
         data.AimDownSights = Input.GetAxis(config.AimDownSightsAxisName);
+
+        data.Jump = Input.GetAxis(config.JumpAxisName) > 0.0f;
     }
 }

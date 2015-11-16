@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerCamera : MonoBehaviour
+public class PlayerAiming : MonoBehaviour
 {
-    [Header("Tunables")]
+    [Header("Rotation")]
     [SerializeField]
     private float yawSpeed;
     [SerializeField]
@@ -15,7 +15,7 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField]
     private bool invertVertical = false;
 
-    [Header("Perspective Tunables")]
+    [Header("Perspective")]
     [SerializeField]
     private Vector3 firstPersonCameraOffset;
     [SerializeField]
@@ -31,7 +31,8 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField]
     private new Transform camera;
 
-    private bool isThirdPerson = false;
+    public bool IsThirdPerson { get; private set; }
+
     private bool perspectiveIsTransitioning = false;
 
     private void Start()
@@ -57,7 +58,7 @@ public class PlayerCamera : MonoBehaviour
         if (!perspectiveIsTransitioning)
         {
             bool altPerspectiveInput = player.Input.AimDownSights > 0.0f;
-            bool altPerspectiveActive = (defaultThirdPerson != isThirdPerson);
+            bool altPerspectiveActive = (defaultThirdPerson != IsThirdPerson);
 
             if (altPerspectiveInput && !altPerspectiveActive)
             {
@@ -98,7 +99,7 @@ public class PlayerCamera : MonoBehaviour
 
     private void SetPerspective(bool thirdPerson, bool snap = false)
     {
-        isThirdPerson = thirdPerson;
+        IsThirdPerson = thirdPerson;
 
         Vector3 initialOffset = thirdPerson ? firstPersonCameraOffset : thirdPersonCameraOffset;
         Vector3 targetOffset = thirdPerson ? thirdPersonCameraOffset : firstPersonCameraOffset;

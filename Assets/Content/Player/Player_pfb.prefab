@@ -12,6 +12,9 @@ GameObject:
   - 114: {fileID: 11455798}
   - 114: {fileID: 11488934}
   - 114: {fileID: 11453056}
+  - 143: {fileID: 14397728}
+  - 33: {fileID: 3334828}
+  - 23: {fileID: 2372014}
   m_Layer: 0
   m_Name: Player_pfb
   m_TagString: Untagged
@@ -31,27 +34,10 @@ GameObject:
   - 92: {fileID: 9227224}
   - 124: {fileID: 12418572}
   - 81: {fileID: 8103966}
+  - 114: {fileID: 11434184}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &175594
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 458336}
-  - 136: {fileID: 13661264}
-  - 33: {fileID: 3388186}
-  - 23: {fileID: 2392894}
-  m_Layer: 0
-  m_Name: Collider
-  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,7 +53,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 439784}
-  - {fileID: 458336}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &439784
@@ -82,18 +67,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 401280}
   m_RootOrder: 0
---- !u!4 &458336
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 175594}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 401280}
-  m_RootOrder: 1
 --- !u!20 &2056554
 Camera:
   m_ObjectHideFlags: 1
@@ -128,12 +101,12 @@ Camera:
   m_StereoConvergence: 10
   m_StereoSeparation: .0219999999
   m_StereoMirrorMode: 0
---- !u!23 &2392894
+--- !u!23 &2372014
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 175594}
+  m_GameObject: {fileID: 103034}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -152,12 +125,12 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!33 &3388186
+--- !u!33 &3334828
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 175594}
+  m_GameObject: {fileID: 103034}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!81 &8103966
 AudioListener:
@@ -186,7 +159,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   input: {fileID: 11455798}
   movement: {fileID: 11488934}
-  camera: {fileID: 11453056}
+  aiming: {fileID: 11453056}
+--- !u!114 &11434184
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 161280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee016e5b39c08ad4cb696d3886d8aa57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  screenSpacePosition: {x: .5, y: .5}
+  textureSize: {x: 256, y: 256}
+  firstPersonReticleTexture: {fileID: 2800000, guid: d79677d79bf8c3046bb5d86a9a760043,
+    type: 3}
+  thirdPersonReticleTexture: {fileID: 2800000, guid: 8f1aca06ef6dfa444802fb025afe66b4,
+    type: 3}
+  player: {fileID: 11433726}
 --- !u!114 &11453056
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -226,12 +217,14 @@ MonoBehaviour:
     LookHorizontalAxisName: LookHorizontalController
     LookVerticalAxisName: LookVerticalController
     AimDownSightsAxisName: AimDownSightsController
+    JumpAxisName: JumpController
   keyboardMouseConfig:
     MovementHorizontalAxisName: MovementHorizontalKeyboardMouse
     MovementVerticalAxisName: MovementVerticalKeyboardMouse
     LookHorizontalAxisName: LookHorizontalKeyboardMouse
     LookVerticalAxisName: LookVerticalKeyboardMouse
     AimDownSightsAxisName: AimDownSightsKeyboardMouse
+    JumpAxisName: JumpKeyboardMouse
 --- !u!114 &11488934
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -243,8 +236,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9e94e594b89d654a9e51ca06dfa4d1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  maxMovementSpeed: 13
+  maxMovementAcceleration: 100
+  maxInAirMovementAcceleration: 10
+  timeToMaxMovementAcceleration: .0500000007
+  maxGravitySpeed: 20
+  maxGravityAcceleration: 100
+  timeToMaxGravityAcceleration: .0500000007
+  jumpDuration: .200000003
+  jumpHeight: 3
   player: {fileID: 11433726}
+  characterController: {fileID: 14397728}
 --- !u!124 &12418572
 Behaviour:
   m_ObjectHideFlags: 1
@@ -252,18 +254,22 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 161280}
   m_Enabled: 1
---- !u!136 &13661264
-CapsuleCollider:
+--- !u!143 &14397728
+CharacterController:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 175594}
+  m_GameObject: {fileID: 103034}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: .5
+  serializedVersion: 2
   m_Height: 2
-  m_Direction: 1
+  m_Radius: .5
+  m_SlopeLimit: 45
+  m_StepOffset: .300000012
+  m_SkinWidth: .0799999982
+  m_MinMoveDistance: .00100000005
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
 Prefab:
