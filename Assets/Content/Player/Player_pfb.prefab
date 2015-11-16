@@ -10,11 +10,12 @@ GameObject:
   - 4: {fileID: 401280}
   - 114: {fileID: 11433726}
   - 114: {fileID: 11455798}
-  - 114: {fileID: 11488934}
+  - 114: {fileID: 11490192}
   - 114: {fileID: 11453056}
   - 143: {fileID: 14397728}
   - 33: {fileID: 3334828}
   - 23: {fileID: 2372014}
+  - 114: {fileID: 11431360}
   m_Layer: 0
   m_Name: Player_pfb
   m_TagString: Untagged
@@ -146,6 +147,22 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 161280}
   m_Enabled: 1
+--- !u!114 &11431360
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 103034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a10e0e1300424b45a230286722c1e36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHitPoints: 10
+  initialHitPoints: 10
+  safeVolumeLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &11433726
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -158,7 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input: {fileID: 11455798}
-  movement: {fileID: 11488934}
+  steering: {fileID: 11490192}
   aiming: {fileID: 11453056}
 --- !u!114 &11434184
 MonoBehaviour:
@@ -172,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   screenSpacePosition: {x: .5, y: .5}
-  textureSize: {x: 256, y: 256}
+  screenSpaceSize: .200000003
   firstPersonReticleTexture: {fileID: 2800000, guid: d79677d79bf8c3046bb5d86a9a760043,
     type: 3}
   thirdPersonReticleTexture: {fileID: 2800000, guid: 8f1aca06ef6dfa444802fb025afe66b4,
@@ -225,7 +242,8 @@ MonoBehaviour:
     LookVerticalAxisName: LookVerticalKeyboardMouse
     AimDownSightsAxisName: AimDownSightsKeyboardMouse
     JumpAxisName: JumpKeyboardMouse
---- !u!114 &11488934
+  player: {fileID: 11433726}
+--- !u!114 &11490192
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -233,20 +251,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 103034}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9e94e594b89d654a9e51ca06dfa4d1d, type: 3}
+  m_Script: {fileID: 11500000, guid: 28b7454698936f647a9e004b0be0c86e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxMovementSpeed: 13
   maxMovementAcceleration: 100
   maxInAirMovementAcceleration: 10
   timeToMaxMovementAcceleration: .0500000007
+  useGravity: 1
   maxGravitySpeed: 20
   maxGravityAcceleration: 100
   timeToMaxGravityAcceleration: .0500000007
   jumpDuration: .200000003
   jumpHeight: 3
-  player: {fileID: 11433726}
-  characterController: {fileID: 14397728}
+  controller: {fileID: 14397728}
 --- !u!124 &12418572
 Behaviour:
   m_ObjectHideFlags: 1

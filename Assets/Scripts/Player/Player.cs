@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private PlayerInput input;
     [SerializeField]
-    private PlayerMovement movement;
+    private CharacterSteering steering;
     [SerializeField]
     private PlayerAiming aiming;
 
@@ -15,9 +15,9 @@ public class Player : MonoBehaviour
         get { return input; }
     }
 
-    public PlayerMovement Movement
+    public CharacterSteering Steering
     {
-        get { return movement; }
+        get { return steering; }
     }
 
     public PlayerAiming Aiming

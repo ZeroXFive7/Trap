@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using System.Collections;
 
-public class PlayerMovement : MonoBehaviour
+[RequireComponent(typeof(CharacterController))]
+public class CharacterSteering : MonoBehaviour
 {
     static private readonly Vector3 gravityDirection = new Vector3(0.0f, -1.0f, 0.0f);
 
@@ -16,6 +18,8 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Gravity")]
     [SerializeField]
+    private bool useGravity = true;
+    [SerializeField]
     private float maxGravitySpeed = 10.0f;
     [SerializeField]
     private float maxGravityAcceleration = 10.0f;
@@ -30,9 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Component References")]
     [SerializeField]
-    private Player player = null;
-    [SerializeField]
-    private CharacterController characterController = null;
+    private CharacterController controller = null;
 
     public bool IsJumping { get; private set; }
 
@@ -42,47 +44,18 @@ public class PlayerMovement : MonoBehaviour
     private float jumpTimeElapsed = 0.0f;
     private float jumpSpeed = 0.0f;
 
-    private void Start()
+    private Vector3 targetPosition = Vector3.zero;
+    private float targetDecelerationDistance = 0.0f;
+
+    public void SetTarget(Vector3 position, float decelerationDistance)
     {
-        IsJumping = false;
+        targetPosition = position;
+        targetDecelerationDistance = decelerationDistance;
     }
 
-    private void Update()
+    public void Jump()
     {
-        float deltaTime = Time.deltaTime;
-        UpdateJumping(deltaTime);
-
-        // Euler integration.
-        Vector3 movementAcceleration = GetMovementAcceleration();
-        if (!characterController.isGrounded)
-        {
-            movementAcceleration = Vector3.ClampMagnitude(movementAcceleration, maxInAirMovementAcceleration);
-        }
-        movementVelocity += movementAcceleration * deltaTime;
-        movementVelocity = Vector3.ClampMagnitude(movementVelocity, maxMovementSpeed);
-
-        if (!characterController.isGrounded && !IsJumping)
-        {
-            Vector3 gravityAcceleration = GetGravityAcceleration();
-            gravityVelocity += gravityAcceleration * deltaTime;
-            gravityVelocity = Vector3.ClampMagnitude(gravityVelocity, maxGravitySpeed);
-        }
-        else if (IsJumping)
-        {
-            gravityVelocity = -gravityDirection * jumpSpeed;
-        }
-
-        characterController.Move((movementVelocity + gravityVelocity)* Time.deltaTime);
-    }
-
-    private void UpdateJumping(float deltaTime)
-    {
-        if (IsJumping)
-        {
-            IsJumping = jumpTimeElapsed <= jumpDuration && !characterController.isGrounded;
-            jumpTimeElapsed += deltaTime;
-        }
-        else if (characterController.isGrounded && player.Input.Jump)
+        if (controller.isGrounded)
         {
             IsJumping = true;
             jumpTimeElapsed = 0.0f;
@@ -90,10 +63,54 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        IsJumping = false;
+    }
+
+    private void Update()
+    {
+        // Euler integration.
+        Vector3 movementAcceleration = GetMovementAcceleration();
+        if (useGravity && !controller.isGrounded)
+        {
+            movementAcceleration = Vector3.ClampMagnitude(movementAcceleration, maxInAirMovementAcceleration);
+        }
+        movementVelocity += movementAcceleration * Time.deltaTime;
+        movementVelocity = Vector3.ClampMagnitude(movementVelocity, maxMovementSpeed);
+
+        if (useGravity)
+        {
+            if (IsJumping)
+            {
+                gravityVelocity = -gravityDirection * jumpSpeed;
+            }
+            else if (!controller.isGrounded)
+            {
+                Vector3 gravityAcceleration = GetGravityAcceleration();
+                gravityVelocity += gravityAcceleration * Time.deltaTime;
+                gravityVelocity = Vector3.ClampMagnitude(gravityVelocity, maxGravitySpeed);
+            }
+
+            IsJumping = jumpTimeElapsed <= jumpDuration && !controller.isGrounded;
+            jumpTimeElapsed += Time.deltaTime;
+        }
+
+        controller.Move((movementVelocity + gravityVelocity) * Time.deltaTime);
+    }
+
     private Vector3 GetMovementAcceleration()
     {
-        Vector3 targetVelocity = new Vector3(player.Input.Movement.x, 0.0f, player.Input.Movement.y);
-        targetVelocity = transform.TransformDirection(targetVelocity) * maxMovementSpeed;
+        Vector3 targetDirection = targetPosition - transform.position;
+        float distanceToTarget = targetDirection.magnitude;
+
+        float desiredSpeed = maxMovementSpeed;
+        if (distanceToTarget < targetDecelerationDistance)
+        {
+            desiredSpeed *= distanceToTarget / targetDecelerationDistance;
+        }
+
+        Vector3 targetVelocity = targetDirection.normalized * desiredSpeed;
 
         Vector3 acceleration = targetVelocity - movementVelocity;
         acceleration /= timeToMaxMovementAcceleration;

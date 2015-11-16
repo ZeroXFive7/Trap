@@ -40,20 +40,16 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private InputAxesConfiguration keyboardMouseConfig;
 
+    [Header("Component References")]
+    [SerializeField]
+    private Player player = null;
+
     private InputData emptyInput = new InputData();
     private InputData controllerInput = new InputData();
     private InputData keyboardMouseInput = new InputData();
     private InputData currentInput;
 
     public bool UsingControllerInput { get; private set; }
-
-    public Vector2 Movement
-    {
-        get
-        {
-            return currentInput.Movement;
-        }
-    }
 
     public Vector2 Look
     {
@@ -68,14 +64,6 @@ public class PlayerInput : MonoBehaviour
         get
         {
             return currentInput.AimDownSights;
-        }
-    }
-
-    public bool Jump
-    {
-        get
-        {
-            return currentInput.Jump;
         }
     }
 
@@ -103,6 +91,17 @@ public class PlayerInput : MonoBehaviour
             }
 
             currentInput = (UsingControllerInput ? controllerInput : keyboardMouseInput);
+        }
+
+        // Move.
+        Vector3 steeringDirection = new Vector3(currentInput.Movement.x, 0.0f, currentInput.Movement.y);
+        steeringDirection = transform.TransformDirection(steeringDirection);
+        player.Steering.SetTarget(transform.position + steeringDirection, 0.0f);
+
+        // Jump.
+        if (currentInput.Jump)
+        {
+            player.Steering.Jump();
         }
     }
 
