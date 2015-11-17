@@ -47,10 +47,20 @@ public class CharacterSteering : MonoBehaviour
     private Vector3 targetPosition = Vector3.zero;
     private float targetDecelerationDistance = 0.0f;
 
-    public void SetTarget(Vector3 position, float decelerationDistance)
+    public void SetTarget(Vector3 position, float decelerationDistance, bool snap = false)
     {
         targetPosition = position;
         targetDecelerationDistance = decelerationDistance;
+
+        if (snap)
+        {
+            IsJumping = false;
+            movementVelocity = Vector3.zero;
+            gravityVelocity = Vector3.zero;
+            jumpTimeElapsed = float.MaxValue;
+
+            transform.position = position;
+        }
     }
 
     public void Jump()
@@ -84,6 +94,7 @@ public class CharacterSteering : MonoBehaviour
             if (IsJumping)
             {
                 gravityVelocity = -gravityDirection * jumpSpeed;
+                jumpTimeElapsed += Time.deltaTime;
             }
             else if (!controller.isGrounded)
             {
@@ -93,7 +104,6 @@ public class CharacterSteering : MonoBehaviour
             }
 
             IsJumping = jumpTimeElapsed <= jumpDuration && !controller.isGrounded;
-            jumpTimeElapsed += Time.deltaTime;
         }
 
         controller.Move((movementVelocity + gravityVelocity) * Time.deltaTime);

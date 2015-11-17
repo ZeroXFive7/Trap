@@ -10,7 +10,13 @@ public class CharacterHealth : MonoBehaviour
     [SerializeField]
     private LayerMask safeVolumeLayers;
 
+    [Header("Component References")]
+    [SerializeField]
+    CharacterSteering steering = null;
+
     public float HitPoints { get; private set; }
+
+    public bool IsDead { get; private set; }
 
     public float FractionalHitPoints
     {
@@ -20,19 +26,24 @@ public class CharacterHealth : MonoBehaviour
         }
     }
 
-    public void Spawn()
+    public void Spawn(Transform spawnPoint)
     {
+        IsDead = false;
         HitPoints = initialHitPoints;
+
+        steering.SetTarget(spawnPoint.position, 0.0f, true);
     }
 
     public void Die()
     {
         HitPoints = 0.0f;
+        IsDead = true;
     }
 
     private void Start()
     {
-        Spawn();
+        IsDead = false;
+        HitPoints = initialHitPoints;
     }
 
     private void OnTriggerExit(Collider other)
@@ -40,6 +51,9 @@ public class CharacterHealth : MonoBehaviour
         if (other.gameObject.LayerIsInLayerMask(safeVolumeLayers))
         {
             Die();
+
+            Transform spawnPoint = GameplayManager.Instance.CurrentLevel.GetClosestSpawnPoint(transform.position);
+            Spawn(spawnPoint);
         }
     }
 }

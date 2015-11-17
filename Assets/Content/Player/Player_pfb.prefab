@@ -162,7 +162,8 @@ MonoBehaviour:
   initialHitPoints: 10
   safeVolumeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
+  steering: {fileID: 11490192}
 --- !u!114 &11433726
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -175,6 +176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input: {fileID: 11455798}
+  health: {fileID: 11431360}
   steering: {fileID: 11490192}
   aiming: {fileID: 11453056}
 --- !u!114 &11434184
@@ -235,6 +237,7 @@ MonoBehaviour:
     LookVerticalAxisName: LookVerticalController
     AimDownSightsAxisName: AimDownSightsController
     JumpAxisName: JumpController
+    ContextSensitiveActionAxisName: 
   keyboardMouseConfig:
     MovementHorizontalAxisName: MovementHorizontalKeyboardMouse
     MovementVerticalAxisName: MovementVerticalKeyboardMouse
@@ -242,6 +245,7 @@ MonoBehaviour:
     LookVerticalAxisName: LookVerticalKeyboardMouse
     AimDownSightsAxisName: AimDownSightsKeyboardMouse
     JumpAxisName: JumpKeyboardMouse
+    ContextSensitiveActionAxisName: 
   player: {fileID: 11433726}
 --- !u!114 &11490192
 MonoBehaviour:

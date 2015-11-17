@@ -12,6 +12,7 @@ public class PlayerInput : MonoBehaviour
         public string LookVerticalAxisName;
         public string AimDownSightsAxisName;
         public string JumpAxisName;
+        public string ContextSensitiveActionAxisName;
     }
 
     private class InputData
@@ -20,6 +21,7 @@ public class PlayerInput : MonoBehaviour
         public Vector2 Look = Vector2.zero;
         public float AimDownSights = 0.0f;
         public bool Jump = false;
+        public bool ContextSensitiveAction = false;
 
         public bool IsEmpty
         {
@@ -30,7 +32,8 @@ public class PlayerInput : MonoBehaviour
                     Look.x == 0.0f &&
                     Look.y == 0.0f &&
                     AimDownSights == 0.0f &&
-                    Jump == false;
+                    Jump == false &&
+                    ContextSensitiveAction == false;
             }
         }
     }
@@ -102,6 +105,13 @@ public class PlayerInput : MonoBehaviour
         if (currentInput.Jump)
         {
             player.Steering.Jump();
+        }
+
+        // Context sensitive action.
+        if (currentInput.ContextSensitiveAction && player.Health.IsDead)
+        {
+            Transform spawnPoint = GameplayManager.Instance.CurrentLevel.GetClosestSpawnPoint(transform.position);
+            player.Health.Spawn(spawnPoint);
         }
     }
 
