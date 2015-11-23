@@ -8,10 +8,10 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 401280}
-  - 114: {fileID: 11433726}
+  - 114: {fileID: 11438012}
   - 114: {fileID: 11455798}
+  - 114: {fileID: 11433726}
   - 114: {fileID: 11490192}
-  - 114: {fileID: 11453056}
   - 114: {fileID: 11403024}
   - 114: {fileID: 11431360}
   - 114: {fileID: 11412184}
@@ -19,6 +19,7 @@ GameObject:
   - 143: {fileID: 14397728}
   - 23: {fileID: 2372014}
   - 95: {fileID: 9563334}
+  - 114: {fileID: 11491274}
   m_Layer: 0
   m_Name: Player_pfb
   m_TagString: Untagged
@@ -26,16 +27,16 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &158436
+--- !u!1 &104066
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 434044}
+  - 4: {fileID: 439136}
   m_Layer: 0
-  m_Name: MeleeWeaponOrigin
+  m_Name: Aiming
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +44,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &161280
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
@@ -53,10 +54,25 @@ GameObject:
   - 92: {fileID: 9227224}
   - 124: {fileID: 12418572}
   - 81: {fileID: 8103966}
-  - 114: {fileID: 11434184}
+  - 114: {fileID: 11436826}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &188952
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 485112}
+  m_Layer: 0
+  m_Name: MeleeAttackOrigin
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71,22 +87,23 @@ Transform:
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 439784}
-  - {fileID: 434044}
+  - {fileID: 439136}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!4 &434044
+--- !u!4 &439136
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 158436}
-  m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106709}
-  m_LocalPosition: {x: .5, y: -.25, z: .5}
+  m_GameObject: {fileID: 104066}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 439784}
+  - {fileID: 485112}
   m_Father: {fileID: 401280}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!4 &439784
 Transform:
   m_ObjectHideFlags: 1
@@ -94,11 +111,23 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 161280}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: -8}
+  m_LocalPosition: {x: 0, y: 2, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 401280}
+  m_Father: {fileID: 439136}
   m_RootOrder: 0
+--- !u!4 &485112
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 188952}
+  m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106709}
+  m_LocalPosition: {x: .5, y: -.25, z: .5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 439136}
+  m_RootOrder: 1
 --- !u!20 &2056554
 Camera:
   m_ObjectHideFlags: 1
@@ -115,7 +144,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: .300000012
+  near clip plane: .00999999978
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -207,7 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 11495122, guid: 54812be6f6976eb42b849b419c4f7fe1, type: 2}
-  meleeWeaponOrigin: {fileID: 434044}
+  meleeWeaponOrigin: {fileID: 485112}
   cooldown: 1
   character: {fileID: 11433726}
 --- !u!114 &11412184
@@ -255,7 +284,7 @@ MonoBehaviour:
   collider: {fileID: 14397728}
   meleeAttack: {fileID: 11403024}
   animator: {fileID: 11412184}
---- !u!114 &11434184
+--- !u!114 &11436826
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -263,19 +292,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 161280}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee016e5b39c08ad4cb696d3886d8aa57, type: 3}
+  m_Script: {fileID: 11500000, guid: dcd210d8d5a9b164cb109424896b8e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstPersonReticle:
-    ScreenSpacePosition: {x: .5, y: .5}
-    ScreenSpaceSize: .200000003
-    Texture: {fileID: 2800000, guid: d79677d79bf8c3046bb5d86a9a760043, type: 3}
-  thirdPersonReticle:
-    ScreenSpacePosition: {x: .5, y: .5}
-    ScreenSpaceSize: .200000003
-    Texture: {fileID: 2800000, guid: 8f1aca06ef6dfa444802fb025afe66b4, type: 3}
-  UseThirdPersonReticle: 1
---- !u!114 &11453056
+  firstPersonCameraOffset: {x: 0, y: 2, z: 0}
+  thirdPersonCameraOffset: {x: 0, y: 2, z: -6}
+  perspectiveTransitionTime: .100000001
+  defaultThirdPerson: 1
+--- !u!114 &11438012
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -283,22 +307,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 103034}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcd210d8d5a9b164cb109424896b8e99, type: 3}
+  m_Script: {fileID: 11500000, guid: aadff57190465094596c0037cbdf7c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yawSpeed: 200
-  pitchSpeed: 200
-  minYawAngle: 10
-  invertHorizontal: 0
-  invertVertical: 0
-  firstPersonCameraOffset: {x: 0, y: 2, z: 0}
-  thirdPersonCameraOffset: {x: 0, y: 2, z: -6}
-  perspectiveTransitionTime: .100000001
-  defaultThirdPerson: 1
-  character: {fileID: 11433726}
   input: {fileID: 11455798}
-  reticle: {fileID: 11434184}
-  camera: {fileID: 439784}
+  camera: {fileID: 11436826}
+  character: {fileID: 11433726}
+  yawAimSpeed: 200
+  pitchAimSpeed: 200
 --- !u!114 &11455798
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -328,7 +344,6 @@ MonoBehaviour:
     AttackAxisName: AttackKeyboardMouse
     JumpAxisName: JumpKeyboardMouse
     ContextSensitiveActionAxisName: 
-  player: {fileID: 11433726}
 --- !u!114 &11490192
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -344,6 +359,8 @@ MonoBehaviour:
   maxMovementAcceleration: 100
   maxInAirMovementAcceleration: 10
   timeToMaxMovementAcceleration: .0500000007
+  aimingTransform: {fileID: 439136}
+  minYawAngle: 10
   useGravity: 1
   maxGravitySpeed: 20
   maxGravityAcceleration: 100
@@ -351,6 +368,26 @@ MonoBehaviour:
   jumpDuration: .200000003
   jumpHeight: 3
   character: {fileID: 11433726}
+--- !u!114 &11491274
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 103034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee016e5b39c08ad4cb696d3886d8aa57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstPersonReticle:
+    ScreenSpacePosition: {x: .5, y: .5}
+    ScreenSpaceSize: .200000003
+    Texture: {fileID: 2800000, guid: d79677d79bf8c3046bb5d86a9a760043, type: 3}
+  thirdPersonReticle:
+    ScreenSpacePosition: {x: .5, y: .5}
+    ScreenSpaceSize: .200000003
+    Texture: {fileID: 2800000, guid: 8f1aca06ef6dfa444802fb025afe66b4, type: 3}
+  UseThirdPersonReticle: 1
 --- !u!124 &12418572
 Behaviour:
   m_ObjectHideFlags: 1

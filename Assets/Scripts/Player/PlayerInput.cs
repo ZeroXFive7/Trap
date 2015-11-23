@@ -16,7 +16,7 @@ public class PlayerInput : MonoBehaviour
         public string ContextSensitiveActionAxisName;
     }
 
-    private class InputData
+    public class InputData
     {
         public Vector2 Movement = Vector2.zero;
         public Vector2 Look = Vector2.zero;
@@ -46,41 +46,33 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private InputAxesConfiguration keyboardMouseConfig;
 
-    [Header("Component References")]
-    [SerializeField]
-    private Character player = null;
-
     private InputData emptyInput = new InputData();
     private InputData controllerInput = new InputData();
     private InputData keyboardMouseInput = new InputData();
-    private InputData currentInput;
+
+    public InputData CurrentInput { get; private set; }
 
     public bool UsingControllerInput { get; private set; }
 
-    public Vector2 Look
-    {
-        get
-        {
-            return currentInput.Look;
-        }
-    }
-
-    public bool AimDownSights
-    {
-        get
-        {
-            return currentInput.AimDownSights;
-        }
-    }
-
-    private void Awake()
+    private void Start()
     {
         UsingControllerInput = false;
+        SetCursorState(false);
     }
 
     private void Update()
     {
-        currentInput = emptyInput;
+        // Update cursor state.
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SetCursorState(false);
+        }
+        else if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+        {
+            SetCursorState(true);
+        }
+
+        CurrentInput = emptyInput;
 
         if (!Cursor.visible)
         {
@@ -96,30 +88,7 @@ public class PlayerInput : MonoBehaviour
                 UsingControllerInput = true;
             }
 
-            currentInput = (UsingControllerInput ? controllerInput : keyboardMouseInput);
-        }
-
-        // Move.
-        Vector3 steeringDirection = new Vector3(currentInput.Movement.x, 0.0f, currentInput.Movement.y);
-        steeringDirection = transform.TransformDirection(steeringDirection);
-        player.Steering.SetTarget(transform.position + steeringDirection, 0.0f);
-
-        // Jump.
-        if (currentInput.Jump)
-        {
-            player.Steering.Jump();
-        }
-
-        if (currentInput.Attack)
-        {
-            player.MeleeAttack.Attack();
-        }
-
-        // Context sensitive action.
-        if (currentInput.ContextSensitiveAction && player.Health.IsDead)
-        {
-            Transform spawnPoint = GameplayManager.Instance.CurrentLevel.GetClosestSpawnPoint(transform.position);
-            player.Health.Spawn(spawnPoint);
+            CurrentInput = (UsingControllerInput ? controllerInput : keyboardMouseInput);
         }
     }
 
@@ -138,5 +107,11 @@ public class PlayerInput : MonoBehaviour
         data.Attack = Input.GetAxis(config.AttackAxisName) > 0.0f;
 
         data.Jump = Input.GetAxis(config.JumpAxisName) > 0.0f;
+    }
+
+    private void SetCursorState(bool locked)
+    {
+        Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.visible = !locked;
     }
 }

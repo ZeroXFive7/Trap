@@ -16,6 +16,12 @@ public class CharacterSteering : MonoBehaviour
     [SerializeField]
     private float timeToMaxMovementAcceleration = 0.1f;
 
+    [Header("Rotation")]
+    [SerializeField]
+    private Transform aimingTransform = null;
+    [SerializeField]
+    private float minYawAngle;
+
     [Header("Gravity")]
     [SerializeField]
     private bool useGravity = true;
@@ -44,13 +50,15 @@ public class CharacterSteering : MonoBehaviour
     private float jumpTimeElapsed = 0.0f;
     private float jumpSpeed = 0.0f;
 
-    private Vector3 targetPosition = Vector3.zero;
-    private float targetDecelerationDistance = 0.0f;
+    private Vector3 moveTargetPosition = Vector3.zero;
+    private float moveTargetDecelerationDistance = 0.0f;
+    private float aimYaw = 0.0f;
+    private float aimPitch = 0.0f;
 
-    public void SetTarget(Vector3 position, float decelerationDistance, bool snap = false)
+    public void MoveTowards(Vector3 moveTarget, float decelerationDistance, bool snap = false)
     {
-        targetPosition = position;
-        targetDecelerationDistance = decelerationDistance;
+        moveTargetPosition = moveTarget;
+        moveTargetDecelerationDistance = decelerationDistance;
 
         if (snap)
         {
@@ -59,8 +67,14 @@ public class CharacterSteering : MonoBehaviour
             gravityVelocity = Vector3.zero;
             jumpTimeElapsed = float.MaxValue;
 
-            transform.position = position;
+            transform.position = moveTarget;
         }
+    }
+
+    public void Aim(float yaw, float pitch)
+    {
+        aimYaw = yaw;
+        aimPitch = pitch;
     }
 
     public void Jump()
@@ -76,9 +90,16 @@ public class CharacterSteering : MonoBehaviour
     private void Start()
     {
         IsJumping = false;
+        moveTargetPosition = transform.position;
     }
 
     private void Update()
+    {
+        UpdatePosition();
+        UpdateOrientation();
+    }
+
+    private void UpdatePosition()
     {
         // Euler integration.
         Vector3 movementAcceleration = GetMovementAcceleration();
@@ -108,20 +129,43 @@ public class CharacterSteering : MonoBehaviour
 
         character.Collider.Move((movementVelocity + gravityVelocity) * Time.deltaTime);
         character.Animator.LinearMovementSpeed = movementVelocity.magnitude;
+
+    }
+
+    private void UpdateOrientation()
+    {
+        // Yaw.
+        float yaw = aimYaw * Time.deltaTime;
+        transform.Rotate(Vector3.up * yaw, Space.Self);
+
+        // Pitch.
+        Vector3 previousPosition = aimingTransform.position;
+        Quaternion previousRotation = aimingTransform.rotation;
+
+        float pitch = aimPitch * Time.deltaTime;
+        aimingTransform.RotateAround(transform.position, transform.right, pitch);
+
+        // Avoid gimble lock by disallowing rotations that align forward vector with world up.
+        float angleFromY = Vector3.Angle(aimingTransform.forward, Vector3.up);
+        if (angleFromY < minYawAngle || angleFromY > 180.0f - minYawAngle)
+        {
+            aimingTransform.position = previousPosition;
+            aimingTransform.rotation = previousRotation;
+        }
     }
 
     private Vector3 GetMovementAcceleration()
     {
-        Vector3 targetDirection = targetPosition - transform.position;
-        float distanceToTarget = targetDirection.magnitude;
+        Vector3 moveTargetDirection = moveTargetPosition - transform.position;
+        float distanceToMoveTarget = moveTargetDirection.magnitude;
 
         float desiredSpeed = maxMovementSpeed;
-        if (distanceToTarget < targetDecelerationDistance)
+        if (distanceToMoveTarget < moveTargetDecelerationDistance)
         {
-            desiredSpeed *= distanceToTarget / targetDecelerationDistance;
+            desiredSpeed *= distanceToMoveTarget / moveTargetDecelerationDistance;
         }
 
-        Vector3 targetVelocity = targetDirection.normalized * desiredSpeed;
+        Vector3 targetVelocity = moveTargetDirection.normalized * desiredSpeed;
 
         Vector3 acceleration = targetVelocity - movementVelocity;
         acceleration /= timeToMaxMovementAcceleration;

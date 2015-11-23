@@ -15,38 +15,38 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - time: 0
-        value: {x: .623394608, y: .333735228, z: -.333735287, w: .623394489}
-        inSlope: {x: 1.00454664, y: -4.00482273, z: 4.00482321, w: 1.00454664}
-        outSlope: {x: 1.00454664, y: -4.00482273, z: 4.00482321, w: 1.00454664}
+        value: {x: .623394608, y: .333735198, z: -.333735257, w: .623394549}
+        inSlope: {x: 1.00454664, y: -4.00482225, z: 4.00482273, w: 1.00454593}
+        outSlope: {x: 1.00454664, y: -4.00482225, z: 4.00482273, w: 1.00454593}
         tangentMode: 0
       - time: .0833333358
         value: {x: .707106829, y: 0, z: 0, w: .707106709}
-        inSlope: {x: -.324339509, y: -3.22189879, z: 2.88941884, w: .956101656}
-        outSlope: {x: -.324339509, y: -3.22189879, z: 2.88941884, w: .956101656}
+        inSlope: {x: -.324339151, y: -3.22189856, z: 2.88941884, w: .956100941}
+        outSlope: {x: -.324339151, y: -3.22189856, z: 2.88941884, w: .956100941}
         tangentMode: 0
       - time: .166666672
-        value: {x: .569338024, y: -.203247905, z: .147834554, w: .782744765}
+        value: {x: .569338083, y: -.20324789, z: .147834569, w: .782744706}
         inSlope: {x: -1.5756743, y: -2.45839262, z: 2.65318871, w: -.267192781}
         outSlope: {x: -1.5756743, y: -2.45839262, z: 2.65318871, w: -.267192781}
         tangentMode: 0
       - time: .25
         value: {x: .444494456, y: -.409732103, z: .442198098, w: .662574589}
-        inSlope: {x: -.875857532, y: -1.36970925, z: 1.96243668, w: -.859247863}
-        outSlope: {x: -.875857532, y: -1.36970925, z: 1.96243668, w: -.859247863}
+        inSlope: {x: -.87585789, y: -1.36970913, z: 1.96243632, w: -.859247506}
+        outSlope: {x: -.87585789, y: -1.36970913, z: 1.96243632, w: -.859247506}
         tangentMode: 0
       - time: .333333343
-        value: {x: .423361778, y: -.43153277, z: .474907309, w: .639536798}
+        value: {x: .423361778, y: -.431532741, z: .474907279, w: .639536798}
         inSlope: {x: 4.47034836e-08, y: 4.47034836e-08, z: -7.4505806e-08, w: 4.47034836e-08}
         outSlope: {x: 4.47034836e-08, y: 4.47034836e-08, z: -7.4505806e-08, w: 4.47034836e-08}
         tangentMode: 0
       - time: .416666657
         value: {x: .444494456, y: -.409732103, z: .442198098, w: .662574589}
-        inSlope: {x: .253592193, y: .261608064, z: -.392510623, w: .276453555}
-        outSlope: {x: .253592193, y: .261608064, z: -.392510623, w: .276453555}
+        inSlope: {x: .253592193, y: .261607707, z: -.392510265, w: .276453555}
+        outSlope: {x: .253592193, y: .261607707, z: -.392510265, w: .276453555}
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
-    path: MeleeWeaponOrigin
+    path: Aiming/MeleeAttackOrigin
   m_CompressedRotationCurves: []
   m_PositionCurves:
   - curve:
@@ -68,18 +68,18 @@ AnimationClip:
         outSlope: {x: -5.01600027, y: .186000109, z: -3.15600014}
         tangentMode: 0
       - time: .25
-        value: {x: -.836000025, y: .0310000181, z: .474000007}
-        inSlope: {x: -2.32800031, y: 1.11758716e-07, z: -1.296}
-        outSlope: {x: -2.32800031, y: 1.11758716e-07, z: -1.296}
+        value: {x: -.836000025, y: .03100002, z: .474000007}
+        inSlope: {x: -2.32800031, y: 1.22934594e-07, z: -1.296}
+        outSlope: {x: -2.32800031, y: 1.22934594e-07, z: -1.296}
         tangentMode: 0
       - time: .416666657
-        value: {x: -.836000025, y: .0310000181, z: .474000007}
+        value: {x: -.836000025, y: .03100002, z: .474000007}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
-    path: MeleeWeaponOrigin
+    path: Aiming/MeleeAttackOrigin
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves: []
@@ -90,13 +90,13 @@ AnimationClip:
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
     genericBindings:
-    - path: 3294450050
+    - path: 3019114726
       attribute: 1
       script: {fileID: 0}
       classID: 4
       customType: 0
       isPPtrCurve: 0
-    - path: 3294450050
+    - path: 3019114726
       attribute: 2
       script: {fileID: 0}
       classID: 4
@@ -152,7 +152,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: m_LocalPosition.x
-    path: MeleeWeaponOrigin
+    path: Aiming/MeleeAttackOrigin
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -174,19 +174,19 @@ AnimationClip:
         outSlope: .186000109
         tangentMode: 10
       - time: .25
-        value: .0310000181
-        inSlope: 1.11758716e-07
-        outSlope: 1.11758716e-07
+        value: .03100002
+        inSlope: 1.22934594e-07
+        outSlope: 1.22934594e-07
         tangentMode: 10
       - time: .416666657
-        value: .0310000181
+        value: .03100002
         inSlope: 0
         outSlope: 0
         tangentMode: 10
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: m_LocalPosition.y
-    path: MeleeWeaponOrigin
+    path: Aiming/MeleeAttackOrigin
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -220,7 +220,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: m_LocalPosition.z
-    path: MeleeWeaponOrigin
+    path: Aiming/MeleeAttackOrigin
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -233,18 +233,18 @@ AnimationClip:
         tangentMode: 0
       - time: .0833333358
         value: .707106829
-        inSlope: -.324339509
-        outSlope: -.324339509
+        inSlope: -.324339151
+        outSlope: -.324339151
         tangentMode: 0
       - time: .166666672
-        value: .569338024
+        value: .569338083
         inSlope: -1.5756743
         outSlope: -1.5756743
         tangentMode: 0
       - time: .25
         value: .444494456
-        inSlope: -.875857532
-        outSlope: -.875857532
+        inSlope: -.87585789
+        outSlope: -.87585789
         tangentMode: 0
       - time: .333333343
         value: .423361778
@@ -259,55 +259,55 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: m_LocalRotation.x
-    path: MeleeWeaponOrigin
+    path: Aiming/MeleeAttackOrigin
     classID: 4
     script: {fileID: 0}
   - curve:
       serializedVersion: 2
       m_Curve:
       - time: 0
-        value: .333735228
-        inSlope: -4.00482273
-        outSlope: -4.00482273
+        value: .333735198
+        inSlope: -4.00482225
+        outSlope: -4.00482225
         tangentMode: 0
       - time: .0833333358
         value: 0
-        inSlope: -3.22189879
-        outSlope: -3.22189879
+        inSlope: -3.22189856
+        outSlope: -3.22189856
         tangentMode: 0
       - time: .166666672
-        value: -.203247905
+        value: -.20324789
         inSlope: -2.45839262
         outSlope: -2.45839262
         tangentMode: 0
       - time: .25
         value: -.409732103
-        inSlope: -1.36970925
-        outSlope: -1.36970925
+        inSlope: -1.36970913
+        outSlope: -1.36970913
         tangentMode: 0
       - time: .333333343
-        value: -.43153277
+        value: -.431532741
         inSlope: 4.47034836e-08
         outSlope: 4.47034836e-08
         tangentMode: 0
       - time: .416666657
         value: -.409732103
-        inSlope: .261608064
-        outSlope: .261608064
+        inSlope: .261607707
+        outSlope: .261607707
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: m_LocalRotation.y
-    path: MeleeWeaponOrigin
+    path: Aiming/MeleeAttackOrigin
     classID: 4
     script: {fileID: 0}
   - curve:
       serializedVersion: 2
       m_Curve:
       - time: 0
-        value: -.333735287
-        inSlope: 4.00482321
-        outSlope: 4.00482321
+        value: -.333735257
+        inSlope: 4.00482273
+        outSlope: 4.00482273
         tangentMode: 0
       - time: .0833333358
         value: 0
@@ -315,53 +315,53 @@ AnimationClip:
         outSlope: 2.88941884
         tangentMode: 0
       - time: .166666672
-        value: .147834554
+        value: .147834569
         inSlope: 2.65318871
         outSlope: 2.65318871
         tangentMode: 0
       - time: .25
         value: .442198098
-        inSlope: 1.96243668
-        outSlope: 1.96243668
+        inSlope: 1.96243632
+        outSlope: 1.96243632
         tangentMode: 0
       - time: .333333343
-        value: .474907309
+        value: .474907279
         inSlope: -7.4505806e-08
         outSlope: -7.4505806e-08
         tangentMode: 0
       - time: .416666657
         value: .442198098
-        inSlope: -.392510623
-        outSlope: -.392510623
+        inSlope: -.392510265
+        outSlope: -.392510265
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: m_LocalRotation.z
-    path: MeleeWeaponOrigin
+    path: Aiming/MeleeAttackOrigin
     classID: 4
     script: {fileID: 0}
   - curve:
       serializedVersion: 2
       m_Curve:
       - time: 0
-        value: .623394489
-        inSlope: 1.00454664
-        outSlope: 1.00454664
+        value: .623394549
+        inSlope: 1.00454593
+        outSlope: 1.00454593
         tangentMode: 0
       - time: .0833333358
         value: .707106709
-        inSlope: .956101656
-        outSlope: .956101656
+        inSlope: .956100941
+        outSlope: .956100941
         tangentMode: 0
       - time: .166666672
-        value: .782744765
+        value: .782744706
         inSlope: -.267192781
         outSlope: -.267192781
         tangentMode: 0
       - time: .25
         value: .662574589
-        inSlope: -.859247863
-        outSlope: -.859247863
+        inSlope: -.859247506
+        outSlope: -.859247506
         tangentMode: 0
       - time: .333333343
         value: .639536798
@@ -376,7 +376,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: m_LocalRotation.w
-    path: MeleeWeaponOrigin
+    path: Aiming/MeleeAttackOrigin
     classID: 4
     script: {fileID: 0}
   m_EulerEditorCurves:
@@ -390,18 +390,18 @@ AnimationClip:
         tangentMode: 10
       - time: .0833333358
         value: 90
-        inSlope: -107.631866
-        outSlope: -107.631866
+        inSlope: -107.631821
+        outSlope: -107.631821
         tangentMode: 10
       - time: .166666672
-        value: 72.0613556
+        value: 72.0613632
         inSlope: -107.631775
         outSlope: -107.631775
         tangentMode: 10
       - time: .25
         value: 72.0613708
-        inSlope: 9.15527417e-05
-        outSlope: 9.15527417e-05
+        inSlope: 4.57763708e-05
+        outSlope: 4.57763708e-05
         tangentMode: 10
       - time: .416666657
         value: 72.0613708
@@ -411,16 +411,16 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: localEulerAnglesBaked.x
-    path: MeleeWeaponOrigin
+    path: Aiming/MeleeAttackOrigin
     classID: 4
     script: {fileID: 0}
   - curve:
       serializedVersion: 2
       m_Curve:
       - time: 0
-        value: 56.3248749
-        inSlope: -675.898499
-        outSlope: -675.898499
+        value: 56.3248711
+        inSlope: -675.898438
+        outSlope: -675.898438
         tangentMode: 10
       - time: .0833333358
         value: 0
@@ -445,7 +445,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: localEulerAnglesBaked.y
-    path: MeleeWeaponOrigin
+    path: Aiming/MeleeAttackOrigin
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -458,28 +458,28 @@ AnimationClip:
         tangentMode: 10
       - time: .0833333358
         value: 0
-        inSlope: -9.15527344e-05
-        outSlope: -9.15527344e-05
+        inSlope: -9.15527417e-05
+        outSlope: -9.15527417e-05
         tangentMode: 10
       - time: .166666672
-        value: -1.52587891e-05
-        inSlope: 276.282837
-        outSlope: 276.282837
+        value: -1.52587909e-05
+        inSlope: 276.282806
+        outSlope: 276.282806
         tangentMode: 10
       - time: .25
-        value: 46.0471344
-        inSlope: 276.282928
-        outSlope: 276.282928
+        value: 46.0471306
+        inSlope: 276.282898
+        outSlope: 276.282898
         tangentMode: 10
       - time: .416666657
-        value: 46.0471344
+        value: 46.0471306
         inSlope: 0
         outSlope: 0
         tangentMode: 10
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: localEulerAnglesBaked.z
-    path: MeleeWeaponOrigin
+    path: Aiming/MeleeAttackOrigin
     classID: 4
     script: {fileID: 0}
   m_HasGenericRootTransform: 0

@@ -31,7 +31,7 @@ public class CharacterHealth : MonoBehaviour
         IsDead = false;
         HitPoints = initialHitPoints;
 
-        steering.SetTarget(spawnPoint.position, 0.0f, true);
+        steering.MoveTowards(spawnPoint.position, 0.0f, true);
     }
 
     public void Die()
