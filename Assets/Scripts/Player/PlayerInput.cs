@@ -11,6 +11,7 @@ public class PlayerInput : MonoBehaviour
         public string LookHorizontalAxisName;
         public string LookVerticalAxisName;
         public string AimDownSightsAxisName;
+        public string AttackAxisName;
         public string JumpAxisName;
         public string ContextSensitiveActionAxisName;
     }
@@ -19,7 +20,8 @@ public class PlayerInput : MonoBehaviour
     {
         public Vector2 Movement = Vector2.zero;
         public Vector2 Look = Vector2.zero;
-        public float AimDownSights = 0.0f;
+        public bool AimDownSights = false;
+        public bool Attack = false;
         public bool Jump = false;
         public bool ContextSensitiveAction = false;
 
@@ -31,7 +33,8 @@ public class PlayerInput : MonoBehaviour
                     Movement.y == 0.0f &&
                     Look.x == 0.0f &&
                     Look.y == 0.0f &&
-                    AimDownSights == 0.0f &&
+                    AimDownSights == false &&
+                    Attack == false &&
                     Jump == false &&
                     ContextSensitiveAction == false;
             }
@@ -45,7 +48,7 @@ public class PlayerInput : MonoBehaviour
 
     [Header("Component References")]
     [SerializeField]
-    private Player player = null;
+    private Character player = null;
 
     private InputData emptyInput = new InputData();
     private InputData controllerInput = new InputData();
@@ -62,7 +65,7 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    public float AimDownSights
+    public bool AimDownSights
     {
         get
         {
@@ -107,6 +110,11 @@ public class PlayerInput : MonoBehaviour
             player.Steering.Jump();
         }
 
+        if (currentInput.Attack)
+        {
+            player.MeleeAttack.Attack();
+        }
+
         // Context sensitive action.
         if (currentInput.ContextSensitiveAction && player.Health.IsDead)
         {
@@ -125,7 +133,9 @@ public class PlayerInput : MonoBehaviour
             Input.GetAxis(config.LookHorizontalAxisName),
             Input.GetAxis(config.LookVerticalAxisName));
 
-        data.AimDownSights = Input.GetAxis(config.AimDownSightsAxisName);
+        data.AimDownSights = Input.GetAxis(config.AimDownSightsAxisName) > 0.0f;
+
+        data.Attack = Input.GetAxis(config.AttackAxisName) > 0.0f;
 
         data.Jump = Input.GetAxis(config.JumpAxisName) > 0.0f;
     }

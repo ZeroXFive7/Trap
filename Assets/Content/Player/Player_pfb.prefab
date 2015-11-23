@@ -12,12 +12,30 @@ GameObject:
   - 114: {fileID: 11455798}
   - 114: {fileID: 11490192}
   - 114: {fileID: 11453056}
-  - 143: {fileID: 14397728}
-  - 33: {fileID: 3334828}
-  - 23: {fileID: 2372014}
+  - 114: {fileID: 11403024}
   - 114: {fileID: 11431360}
+  - 114: {fileID: 11412184}
+  - 33: {fileID: 3334828}
+  - 143: {fileID: 14397728}
+  - 23: {fileID: 2372014}
+  - 95: {fileID: 9563334}
   m_Layer: 0
   m_Name: Player_pfb
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &158436
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 434044}
+  m_Layer: 0
+  m_Name: MeleeWeaponOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54,8 +72,21 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 439784}
+  - {fileID: 434044}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!4 &434044
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 158436}
+  m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106709}
+  m_LocalPosition: {x: .5, y: -.25, z: .5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 401280}
+  m_RootOrder: 1
 --- !u!4 &439784
 Transform:
   m_ObjectHideFlags: 1
@@ -147,6 +178,50 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 161280}
   m_Enabled: 1
+--- !u!95 &9563334
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 103034}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 703c0af01a2033549bc64830d70af683, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11403024
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 103034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4fb9a178c0c5fe49adcfe2048f0d05b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 11495122, guid: 54812be6f6976eb42b849b419c4f7fe1, type: 2}
+  meleeWeaponOrigin: {fileID: 434044}
+  cooldown: 1
+  character: {fileID: 11433726}
+--- !u!114 &11412184
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 103034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5268343797c32c1428390de8d0b1ff99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 9563334}
 --- !u!114 &11431360
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -175,10 +250,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c9a3dbf02b7bb2439ad6bb7aa68429a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  input: {fileID: 11455798}
   health: {fileID: 11431360}
   steering: {fileID: 11490192}
-  aiming: {fileID: 11453056}
+  collider: {fileID: 14397728}
+  meleeAttack: {fileID: 11403024}
+  animator: {fileID: 11412184}
 --- !u!114 &11434184
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -190,13 +266,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee016e5b39c08ad4cb696d3886d8aa57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  screenSpacePosition: {x: .5, y: .5}
-  screenSpaceSize: .200000003
-  firstPersonReticleTexture: {fileID: 2800000, guid: d79677d79bf8c3046bb5d86a9a760043,
-    type: 3}
-  thirdPersonReticleTexture: {fileID: 2800000, guid: 8f1aca06ef6dfa444802fb025afe66b4,
-    type: 3}
-  player: {fileID: 11433726}
+  firstPersonReticle:
+    ScreenSpacePosition: {x: .5, y: .5}
+    ScreenSpaceSize: .200000003
+    Texture: {fileID: 2800000, guid: d79677d79bf8c3046bb5d86a9a760043, type: 3}
+  thirdPersonReticle:
+    ScreenSpacePosition: {x: .5, y: .5}
+    ScreenSpaceSize: .200000003
+    Texture: {fileID: 2800000, guid: 8f1aca06ef6dfa444802fb025afe66b4, type: 3}
+  UseThirdPersonReticle: 1
 --- !u!114 &11453056
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -214,10 +292,12 @@ MonoBehaviour:
   invertHorizontal: 0
   invertVertical: 0
   firstPersonCameraOffset: {x: 0, y: 2, z: 0}
-  thirdPersonCameraOffset: {x: 0, y: 2, z: -8}
+  thirdPersonCameraOffset: {x: 0, y: 2, z: -6}
   perspectiveTransitionTime: .100000001
   defaultThirdPerson: 1
-  player: {fileID: 11433726}
+  character: {fileID: 11433726}
+  input: {fileID: 11455798}
+  reticle: {fileID: 11434184}
   camera: {fileID: 439784}
 --- !u!114 &11455798
 MonoBehaviour:
@@ -236,6 +316,7 @@ MonoBehaviour:
     LookHorizontalAxisName: LookHorizontalController
     LookVerticalAxisName: LookVerticalController
     AimDownSightsAxisName: AimDownSightsController
+    AttackAxisName: AttackController
     JumpAxisName: JumpController
     ContextSensitiveActionAxisName: 
   keyboardMouseConfig:
@@ -244,6 +325,7 @@ MonoBehaviour:
     LookHorizontalAxisName: LookHorizontalKeyboardMouse
     LookVerticalAxisName: LookVerticalKeyboardMouse
     AimDownSightsAxisName: AimDownSightsKeyboardMouse
+    AttackAxisName: AttackKeyboardMouse
     JumpAxisName: JumpKeyboardMouse
     ContextSensitiveActionAxisName: 
   player: {fileID: 11433726}
@@ -268,7 +350,7 @@ MonoBehaviour:
   timeToMaxGravityAcceleration: .0500000007
   jumpDuration: .200000003
   jumpHeight: 3
-  controller: {fileID: 14397728}
+  character: {fileID: 11433726}
 --- !u!124 &12418572
 Behaviour:
   m_ObjectHideFlags: 1
@@ -299,7 +381,27 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_LocalRotation.x
+      value: .707106829
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalRotation.w
+      value: .707106709
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.x
+      value: .5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.y
+      value: -.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.z
+      value: .5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 103034}

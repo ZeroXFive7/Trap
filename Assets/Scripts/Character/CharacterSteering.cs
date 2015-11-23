@@ -34,7 +34,7 @@ public class CharacterSteering : MonoBehaviour
 
     [Header("Component References")]
     [SerializeField]
-    private CharacterController controller = null;
+    private Character character = null;
 
     public bool IsJumping { get; private set; }
 
@@ -65,7 +65,7 @@ public class CharacterSteering : MonoBehaviour
 
     public void Jump()
     {
-        if (controller.isGrounded)
+        if (character.Collider.isGrounded)
         {
             IsJumping = true;
             jumpTimeElapsed = 0.0f;
@@ -82,7 +82,7 @@ public class CharacterSteering : MonoBehaviour
     {
         // Euler integration.
         Vector3 movementAcceleration = GetMovementAcceleration();
-        if (useGravity && !controller.isGrounded)
+        if (useGravity && !character.Collider.isGrounded)
         {
             movementAcceleration = Vector3.ClampMagnitude(movementAcceleration, maxInAirMovementAcceleration);
         }
@@ -96,17 +96,18 @@ public class CharacterSteering : MonoBehaviour
                 gravityVelocity = -gravityDirection * jumpSpeed;
                 jumpTimeElapsed += Time.deltaTime;
             }
-            else if (!controller.isGrounded)
+            else if (!character.Collider.isGrounded)
             {
                 Vector3 gravityAcceleration = GetGravityAcceleration();
                 gravityVelocity += gravityAcceleration * Time.deltaTime;
                 gravityVelocity = Vector3.ClampMagnitude(gravityVelocity, maxGravitySpeed);
             }
 
-            IsJumping = jumpTimeElapsed <= jumpDuration && !controller.isGrounded;
+            IsJumping = jumpTimeElapsed <= jumpDuration && !character.Collider.isGrounded;
         }
 
-        controller.Move((movementVelocity + gravityVelocity) * Time.deltaTime);
+        character.Collider.Move((movementVelocity + gravityVelocity) * Time.deltaTime);
+        character.Animator.LinearMovementSpeed = movementVelocity.magnitude;
     }
 
     private Vector3 GetMovementAcceleration()

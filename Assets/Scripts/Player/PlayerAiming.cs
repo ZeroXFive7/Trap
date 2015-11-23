@@ -27,11 +27,27 @@ public class PlayerAiming : MonoBehaviour
 
     [Header("Component References")]
     [SerializeField]
-    private Player player;
+    private Character character;
+    [SerializeField]
+    private PlayerInput input;
+    [SerializeField]
+    private Reticle reticle;
     [SerializeField]
     private new Transform camera;
 
-    public bool IsThirdPerson { get; private set; }
+    private bool isThirdPerson = true;
+    public bool IsThirdPerson
+    {
+        get
+        {
+            return isThirdPerson;
+        }
+        private set
+        {
+            isThirdPerson = value;
+            reticle.UseThirdPersonReticle = isThirdPerson;
+        }
+    }
 
     private bool perspectiveIsTransitioning = false;
 
@@ -57,21 +73,20 @@ public class PlayerAiming : MonoBehaviour
         // Update perspective.
         if (!perspectiveIsTransitioning)
         {
-            bool altPerspectiveInput = player.Input.AimDownSights > 0.0f;
             bool altPerspectiveActive = (defaultThirdPerson != IsThirdPerson);
 
-            if (altPerspectiveInput && !altPerspectiveActive)
+            if (input.AimDownSights && !altPerspectiveActive)
             {
                 SetPerspective(!defaultThirdPerson);
             }
-            else if (!altPerspectiveInput && altPerspectiveActive)
+            else if (!input.AimDownSights && altPerspectiveActive)
             {
                 SetPerspective(defaultThirdPerson);
             }
         }
 
         // Update camera rotation.
-        float playerRotation = player.Input.Look.x * yawSpeed * Time.deltaTime;
+        float playerRotation = input.Look.x * yawSpeed * Time.deltaTime;
         if (invertHorizontal)
         {
             playerRotation *= -1.0f;
@@ -81,7 +96,7 @@ public class PlayerAiming : MonoBehaviour
         Vector3 previousPosition = camera.transform.position;
         Quaternion previousRotation = camera.transform.rotation;
 
-        float cameraRotation = player.Input.Look.y * pitchSpeed * Time.deltaTime;
+        float cameraRotation = input.Look.y * pitchSpeed * Time.deltaTime;
         if (invertVertical)
         {
             cameraRotation *= -1.0f;
