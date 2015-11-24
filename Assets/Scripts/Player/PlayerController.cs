@@ -21,17 +21,17 @@ public class PlayerController : MonoBehaviour
         // Move.
         Vector3 steeringDirection = new Vector3(currentInput.Movement.x, 0.0f, currentInput.Movement.y);
         steeringDirection = transform.TransformDirection(steeringDirection);
-        character.Steering.MoveTowards(transform.position + steeringDirection, 0.0f);
+        character.Movement.MoveTowards(transform.position + steeringDirection, 0.0f);
 
         // Aim.
-        character.Steering.Aim(currentInput.Look.x * pitchAimSpeed, currentInput.Look.y * yawAimSpeed);
+        character.Aim.AimAt(currentInput.Look.x * pitchAimSpeed, currentInput.Look.y * yawAimSpeed);
 
         camera.IsThirdPerson = !currentInput.AimDownSights;
 
         // Jump.
         if (currentInput.Jump)
         {
-            character.Steering.Jump();
+            character.Movement.Jump();
         }
 
         // Attack.

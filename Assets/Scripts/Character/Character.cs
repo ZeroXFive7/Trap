@@ -6,7 +6,9 @@ public class Character : MonoBehaviour
     [SerializeField]
     private CharacterHealth health = null;
     [SerializeField]
-    private CharacterSteering steering = null;
+    private CharacterMovement movement = null;
+    [SerializeField]
+    private CharacterAim aim = null;
     [SerializeField]
     private new CharacterController collider = null;
     [SerializeField]
@@ -19,9 +21,14 @@ public class Character : MonoBehaviour
         get { return health; }
     }
 
-    public CharacterSteering Steering
+    public CharacterMovement Movement
     {
-        get { return steering; }
+        get { return movement; }
+    }
+
+    public CharacterAim Aim
+    {
+        get { return aim; }
     }
 
     public CharacterController Collider

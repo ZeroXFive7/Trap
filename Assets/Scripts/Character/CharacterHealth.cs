@@ -12,7 +12,7 @@ public class CharacterHealth : MonoBehaviour
 
     [Header("Component References")]
     [SerializeField]
-    CharacterSteering steering = null;
+    CharacterMovement steering = null;
 
     public float HitPoints { get; private set; }
 

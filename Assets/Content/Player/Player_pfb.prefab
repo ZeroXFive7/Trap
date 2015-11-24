@@ -19,7 +19,6 @@ GameObject:
   - 143: {fileID: 14397728}
   - 23: {fileID: 2372014}
   - 95: {fileID: 9563334}
-  - 114: {fileID: 11491274}
   m_Layer: 0
   m_Name: Player_pfb
   m_TagString: Untagged
@@ -35,6 +34,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 439136}
+  - 114: {fileID: 11452776}
   m_Layer: 0
   m_Name: Aiming
   m_TagString: Untagged
@@ -55,6 +55,7 @@ GameObject:
   - 124: {fileID: 12418572}
   - 81: {fileID: 8103966}
   - 114: {fileID: 11436826}
+  - 114: {fileID: 11458756}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -280,7 +281,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: {fileID: 11431360}
-  steering: {fileID: 11490192}
+  movement: {fileID: 11490192}
+  aim: {fileID: 11452776}
   collider: {fileID: 14397728}
   meleeAttack: {fileID: 11403024}
   animator: {fileID: 11412184}
@@ -315,6 +317,19 @@ MonoBehaviour:
   character: {fileID: 11433726}
   yawAimSpeed: 200
   pitchAimSpeed: 200
+--- !u!114 &11452776
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a034e7d21894fe45ab3040b759beb1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minYawAngle: 10
+  character: {fileID: 11433726}
 --- !u!114 &11455798
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -344,36 +359,12 @@ MonoBehaviour:
     AttackAxisName: AttackKeyboardMouse
     JumpAxisName: JumpKeyboardMouse
     ContextSensitiveActionAxisName: 
---- !u!114 &11490192
+--- !u!114 &11458756
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 103034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28b7454698936f647a9e004b0be0c86e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxMovementSpeed: 13
-  maxMovementAcceleration: 100
-  maxInAirMovementAcceleration: 10
-  timeToMaxMovementAcceleration: .0500000007
-  aimingTransform: {fileID: 439136}
-  minYawAngle: 10
-  useGravity: 1
-  maxGravitySpeed: 20
-  maxGravityAcceleration: 100
-  timeToMaxGravityAcceleration: .0500000007
-  jumpDuration: .200000003
-  jumpHeight: 3
-  character: {fileID: 11433726}
---- !u!114 &11491274
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 103034}
+  m_GameObject: {fileID: 161280}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee016e5b39c08ad4cb696d3886d8aa57, type: 3}
@@ -388,6 +379,28 @@ MonoBehaviour:
     ScreenSpaceSize: .200000003
     Texture: {fileID: 2800000, guid: 8f1aca06ef6dfa444802fb025afe66b4, type: 3}
   UseThirdPersonReticle: 1
+--- !u!114 &11490192
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 103034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28b7454698936f647a9e004b0be0c86e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxLocomotionSpeed: 13
+  maxLocomotionAcceleration: 100
+  maxInAirLocomotionAcceleration: 10
+  timeToMaxLocomotionAcceleration: .0500000007
+  useGravity: 1
+  maxGravitySpeed: 20
+  maxGravityAcceleration: 100
+  timeToMaxGravityAcceleration: .0500000007
+  jumpDuration: .200000003
+  jumpHeight: 3
+  character: {fileID: 11433726}
 --- !u!124 &12418572
 Behaviour:
   m_ObjectHideFlags: 1

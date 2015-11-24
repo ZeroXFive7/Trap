@@ -2,25 +2,19 @@
 using System.Collections;
 
 [RequireComponent(typeof(CharacterController))]
-public class CharacterSteering : MonoBehaviour
+public class CharacterMovement : MonoBehaviour
 {
     static private readonly Vector3 gravityDirection = new Vector3(0.0f, -1.0f, 0.0f);
 
-    [Header("Movement")]
+    [Header("Locomotion")]
     [SerializeField]
-    private float maxMovementSpeed = 10.0f;
+    private float maxLocomotionSpeed = 10.0f;
     [SerializeField]
-    private float maxMovementAcceleration = 10.0f;
+    private float maxLocomotionAcceleration = 10.0f;
     [SerializeField]
-    private float maxInAirMovementAcceleration = 2.0f;
+    private float maxInAirLocomotionAcceleration = 2.0f;
     [SerializeField]
-    private float timeToMaxMovementAcceleration = 0.1f;
-
-    [Header("Rotation")]
-    [SerializeField]
-    private Transform aimingTransform = null;
-    [SerializeField]
-    private float minYawAngle;
+    private float timeToMaxLocomotionAcceleration = 0.1f;
 
     [Header("Gravity")]
     [SerializeField]
@@ -71,12 +65,6 @@ public class CharacterSteering : MonoBehaviour
         }
     }
 
-    public void Aim(float yaw, float pitch)
-    {
-        aimYaw = yaw;
-        aimPitch = pitch;
-    }
-
     public void Jump()
     {
         if (character.Collider.isGrounded)
@@ -95,20 +83,14 @@ public class CharacterSteering : MonoBehaviour
 
     private void Update()
     {
-        UpdatePosition();
-        UpdateOrientation();
-    }
-
-    private void UpdatePosition()
-    {
         // Euler integration.
-        Vector3 movementAcceleration = GetMovementAcceleration();
+        Vector3 movementAcceleration = GetLocomotionAcceleration();
         if (useGravity && !character.Collider.isGrounded)
         {
-            movementAcceleration = Vector3.ClampMagnitude(movementAcceleration, maxInAirMovementAcceleration);
+            movementAcceleration = Vector3.ClampMagnitude(movementAcceleration, maxInAirLocomotionAcceleration);
         }
         movementVelocity += movementAcceleration * Time.deltaTime;
-        movementVelocity = Vector3.ClampMagnitude(movementVelocity, maxMovementSpeed);
+        movementVelocity = Vector3.ClampMagnitude(movementVelocity, maxLocomotionSpeed);
 
         if (useGravity)
         {
@@ -129,37 +111,14 @@ public class CharacterSteering : MonoBehaviour
 
         character.Collider.Move((movementVelocity + gravityVelocity) * Time.deltaTime);
         character.Animator.LinearMovementSpeed = movementVelocity.magnitude;
-
     }
 
-    private void UpdateOrientation()
-    {
-        // Yaw.
-        float yaw = aimYaw * Time.deltaTime;
-        transform.Rotate(Vector3.up * yaw, Space.Self);
-
-        // Pitch.
-        Vector3 previousPosition = aimingTransform.position;
-        Quaternion previousRotation = aimingTransform.rotation;
-
-        float pitch = aimPitch * Time.deltaTime;
-        aimingTransform.RotateAround(transform.position, transform.right, pitch);
-
-        // Avoid gimble lock by disallowing rotations that align forward vector with world up.
-        float angleFromY = Vector3.Angle(aimingTransform.forward, Vector3.up);
-        if (angleFromY < minYawAngle || angleFromY > 180.0f - minYawAngle)
-        {
-            aimingTransform.position = previousPosition;
-            aimingTransform.rotation = previousRotation;
-        }
-    }
-
-    private Vector3 GetMovementAcceleration()
+    private Vector3 GetLocomotionAcceleration()
     {
         Vector3 moveTargetDirection = moveTargetPosition - transform.position;
         float distanceToMoveTarget = moveTargetDirection.magnitude;
 
-        float desiredSpeed = maxMovementSpeed;
+        float desiredSpeed = maxLocomotionSpeed;
         if (distanceToMoveTarget < moveTargetDecelerationDistance)
         {
             desiredSpeed *= distanceToMoveTarget / moveTargetDecelerationDistance;
@@ -168,8 +127,8 @@ public class CharacterSteering : MonoBehaviour
         Vector3 targetVelocity = moveTargetDirection.normalized * desiredSpeed;
 
         Vector3 acceleration = targetVelocity - movementVelocity;
-        acceleration /= timeToMaxMovementAcceleration;
-        acceleration = Vector3.ClampMagnitude(acceleration, maxMovementAcceleration);
+        acceleration /= timeToMaxLocomotionAcceleration;
+        acceleration = Vector3.ClampMagnitude(acceleration, maxLocomotionAcceleration);
 
         return acceleration;
     }
