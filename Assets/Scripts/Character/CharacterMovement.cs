@@ -4,156 +4,78 @@ using System.Collections;
 [RequireComponent(typeof(CharacterController))]
 public class CharacterMovement : MonoBehaviour
 {
-    static private readonly Vector3 gravityDirection = new Vector3(0.0f, -1.0f, 0.0f);
-
     [Header("Locomotion")]
     [SerializeField]
-    private float maxLocomotionSpeed = 10.0f;
+    private float locomotionSpeed = 10.0f;
     [SerializeField]
-    private float maxLocomotionSpeedInAir = 2.0f;
+    private float locomotionFallingAcceleration = 10.0f;
+
+    [Header("Sprinting")]
     [SerializeField]
-    private float maxLocomotionAcceleration = 10.0f;
-    [SerializeField]
-    private float timeToMaxLocomotionAcceleration = 0.05f;
+    private float sprintingSpeed = 20.0f;
 
     [Header("Gravity")]
     [SerializeField]
-    private bool useGravity = true;
-    [SerializeField]
-    private float maxGravitySpeed = 10.0f;
-    [SerializeField]
-    private float maxGravityAcceleration = 10.0f;
-    [SerializeField]
-    private float timeToMaxGravityAcceleration = 0.05f;
+    private Vector3 gravityAcceleration = new Vector3(0.0f, -10.0f, 0.0f);
 
     [Header("Jumping")]
     [SerializeField]
-    private float jumpDuration = 1.0f;
-    [SerializeField]
-    private float jumpHeight = 2.0f;
-
-    [Header("Impulse")]
-    [SerializeField]
-    private float impulseDuration = 0.5f;
-    [SerializeField]
-    private float impulseMagnitude = 10.0f;
-    [SerializeField]
-    private float maxImpulseAcceleration = 10.0f;
-    [SerializeField]
-    private float timeToMaxImpulseAcceleration = 0.05f;
+    private float jumpSpeed = 5.0f;
 
     [Header("Component References")]
     [SerializeField]
     private Character character = null;
 
-    public bool IsJumping { get; private set; }
-
+    private Vector3 movementVelocity = Vector3.zero;
     private Vector3 locomotionVelocity = Vector3.zero;
-    private Vector3 gravityVelocity = Vector3.zero;
+    private Vector3 jumpVelocity = Vector3.zero;
     private Vector3 impulseVelocity = Vector3.zero;
-
-    private float jumpTimeElapsed = 0.0f;
-    private float jumpSpeed = 0.0f;
-
-    public void Move(Vector3 localMoveDirection)
-    {
-        locomotionVelocity += transform.TransformDirection(localMoveDirection) * maxLocomotionSpeed;
-    }
 
     public void SnapToPosition(Vector3 position)
     {
-        IsJumping = false;
+        movementVelocity = Vector3.zero;
         locomotionVelocity = Vector3.zero;
-        gravityVelocity = Vector3.zero;
+        jumpVelocity = Vector3.zero;
         impulseVelocity = Vector3.zero;
-        jumpTimeElapsed = float.MaxValue;
 
         transform.position = position;
     }
 
+    public void Move(Vector3 localMoveDirection, bool sprint)
+    {
+        locomotionVelocity = transform.TransformDirection(localMoveDirection).normalized * (sprint ? sprintingSpeed : locomotionSpeed);
+    }
+
     public void Jump()
     {
-        if (character.Collider.isGrounded)
-        {
-            IsJumping = true;
-            jumpTimeElapsed = 0.0f;
-            jumpSpeed = jumpHeight / jumpDuration;
-        }
+        jumpVelocity = -gravityAcceleration.normalized * jumpSpeed;
     }
 
-    public void Impulse(Vector3 direction)
+    public void Impulse(Vector3 force)
     {
-        impulseVelocity += direction * impulseMagnitude;
-    }
-
-    private void Start()
-    {
-        IsJumping = false;
+        impulseVelocity = force;
     }
 
     private void Update()
     {
-        Vector3 impulseDeceleration = GetImpulseAcceleration();
-        impulseVelocity += impulseDeceleration * Time.deltaTime;
-
-        // Euler integration.
-        Vector3 locomotionAcceleration = GetLocomotionAcceleration();
-        locomotionVelocity += locomotionAcceleration * Time.deltaTime;
-        locomotionVelocity = Vector3.ClampMagnitude(locomotionVelocity, maxLocomotionSpeed);
-
-        if (useGravity && !character.Collider.isGrounded)
+        if (character.Collider.isGrounded)
         {
-            locomotionVelocity = Vector3.ClampMagnitude(locomotionVelocity, maxLocomotionSpeedInAir);
+            movementVelocity = locomotionVelocity + jumpVelocity;
+            character.Animator.LinearMovementSpeed = locomotionVelocity.magnitude;
         }
         else
         {
-            locomotionVelocity = Vector3.ClampMagnitude(locomotionVelocity, maxLocomotionSpeed);
-
+            Vector3 locomotionAcceleration = locomotionVelocity.normalized * locomotionFallingAcceleration;
+            movementVelocity += (locomotionAcceleration + gravityAcceleration) * Time.deltaTime;
         }
 
-        if (useGravity)
-        {
-            if (IsJumping)
-            {
-                gravityVelocity = -gravityDirection * jumpSpeed;
-                jumpTimeElapsed += Time.deltaTime;
-            }
-            else if (!character.Collider.isGrounded)
-            {
-                Vector3 gravityAcceleration = GetGravityAcceleration();
-                gravityVelocity += gravityAcceleration * Time.deltaTime;
-                gravityVelocity = Vector3.ClampMagnitude(gravityVelocity, maxGravitySpeed);
-            }
+        movementVelocity += impulseVelocity;
 
-            IsJumping = jumpTimeElapsed <= jumpDuration && !character.Collider.isGrounded;
-        }
+        character.Collider.Move(movementVelocity * Time.deltaTime);
 
-        character.Collider.Move((locomotionVelocity + gravityVelocity + impulseVelocity) * Time.deltaTime);
-        character.Animator.LinearMovementSpeed = locomotionVelocity.magnitude;
-    }
-
-    private Vector3 GetLocomotionAcceleration()
-    {
-        return GetAcceleration(Vector3.zero, locomotionVelocity, timeToMaxLocomotionAcceleration, maxLocomotionAcceleration);
-    }
-
-    private Vector3 GetGravityAcceleration()
-    {
-        Vector3 targetVelocity = gravityDirection * maxGravitySpeed;
-        return GetAcceleration(targetVelocity, gravityVelocity, timeToMaxGravityAcceleration, maxGravityAcceleration);
-    }
-
-    private Vector3 GetImpulseAcceleration()
-    {
-        return GetAcceleration(Vector3.zero, impulseVelocity, timeToMaxImpulseAcceleration, maxImpulseAcceleration);
-    }
-
-    private Vector3 GetAcceleration(Vector3 desiredVelocity, Vector3 currentVelocity, float timeToMaxAcceleration, float maxAcceleration)
-    {
-        Vector3 acceleration = desiredVelocity - currentVelocity;
-        acceleration /= timeToMaxAcceleration;
-        acceleration = Vector3.ClampMagnitude(acceleration, maxAcceleration);
-
-        return acceleration;
+        // Reset state.
+        locomotionVelocity = Vector3.zero;
+        jumpVelocity = Vector3.zero;
+        impulseVelocity = Vector3.zero;
     }
 }

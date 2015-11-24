@@ -122,7 +122,7 @@ MonoBehaviour:
     CullingMask:
       serializedVersion: 2
       m_Bits: 4294967295
-  perspectiveTransitionTime: .100000001
+  perspectiveTransitionTime: .0659999996
   defaultThirdPerson: 1
   camera: {fileID: 2006392}
   reticle: {fileID: 11407396}

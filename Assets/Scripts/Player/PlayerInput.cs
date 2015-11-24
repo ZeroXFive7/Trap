@@ -13,6 +13,7 @@ public class PlayerInput : MonoBehaviour
         public string AimDownSightsAxisName;
         public string AttackAxisName;
         public string JumpAxisName;
+        public string SpringAxisName;
         public string ContextSensitiveActionAxisName;
     }
 
@@ -23,6 +24,7 @@ public class PlayerInput : MonoBehaviour
         public bool AimDownSights = false;
         public bool Attack = false;
         public bool Jump = false;
+        public bool Sprint = false;
         public bool ContextSensitiveAction = false;
 
         public bool IsEmpty
@@ -50,6 +52,7 @@ public class PlayerInput : MonoBehaviour
         AimDownSightsAxisName = "AimDownSightsController",
         AttackAxisName = "AttackController",
         JumpAxisName = "JumpController",
+        SpringAxisName = "SprintController",
         ContextSensitiveActionAxisName = "ContextSensitiveActionController"
     };
 
@@ -62,6 +65,7 @@ public class PlayerInput : MonoBehaviour
         AimDownSightsAxisName = "AimDownSightsKeyboardMouse",
         AttackAxisName = "AttackKeyboardMouse",
         JumpAxisName = "JumpKeyboardMouse",
+        SpringAxisName = "SprintKeyboardMouse",
         ContextSensitiveActionAxisName = "ContextSensitiveActionKeyboardMouse"
     };
 
@@ -126,6 +130,8 @@ public class PlayerInput : MonoBehaviour
         data.Attack = Input.GetAxis(config.AttackAxisName) > 0.0f;
 
         data.Jump = Input.GetAxis(config.JumpAxisName) > 0.0f;
+
+        data.Sprint = Input.GetAxis(config.SpringAxisName) > 0.0f;
     }
 
     private void SetCursorState(bool locked)

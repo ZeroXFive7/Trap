@@ -182,20 +182,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28b7454698936f647a9e004b0be0c86e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxLocomotionSpeed: 13
-  maxLocomotionSpeedInAir: 5
-  maxLocomotionAcceleration: 500
-  timeToMaxLocomotionAcceleration: .0500000007
-  useGravity: 1
-  maxGravitySpeed: 20
-  maxGravityAcceleration: 100
-  timeToMaxGravityAcceleration: .0500000007
-  jumpDuration: .200000003
-  jumpHeight: 3
-  impulseDuration: .5
-  impulseMagnitude: 10
-  maxImpulseAcceleration: 10
-  timeToMaxImpulseAcceleration: .0500000007
+  locomotionSpeed: 10
+  locomotionFallingAcceleration: 10
+  gravityAcceleration: {x: 0, y: -20, z: 0}
+  jumpSpeed: 10
   character: {fileID: 11440530}
 --- !u!114 &11420092
 MonoBehaviour:
@@ -327,6 +317,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: gravityAcceleration.y
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: jumpSpeed
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

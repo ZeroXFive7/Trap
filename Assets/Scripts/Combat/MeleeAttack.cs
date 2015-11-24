@@ -11,6 +11,8 @@ public class MeleeAttack : MonoBehaviour
     private float duration = 0.1f;
     [SerializeField]
     private float cooldown = 0.1f;
+    [SerializeField]
+    private float impulseMagnitude = 20.0f;
 
     [Header("Component References")]
     [SerializeField]
@@ -48,7 +50,7 @@ public class MeleeAttack : MonoBehaviour
         }
 
         Vector3 otherDirection = (Vector3.up + other.transform.position - transform.position).normalized;
-        other.Movement.Impulse(otherDirection);
+        other.Movement.Impulse(otherDirection * impulseMagnitude);
     }
 
     private IEnumerator AttackCoroutine()

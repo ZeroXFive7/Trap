@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
         PlayerInput.InputData currentInput = Input.CurrentInput;
 
         // Move.
-        Character.Movement.Move(new Vector3(currentInput.Movement.x, 0.0f, currentInput.Movement.y));
+        Character.Movement.Move(new Vector3(currentInput.Movement.x, 0.0f, currentInput.Movement.y), currentInput.Sprint);
 
         // Aim.
         Character.Aiming.Aim(currentInput.Look.x, currentInput.Look.y);
