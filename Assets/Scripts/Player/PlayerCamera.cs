@@ -3,15 +3,28 @@ using System.Collections;
 
 public class PlayerCamera : MonoBehaviour
 {
+    [System.Serializable]
+    private struct CameraConfiguration
+    {
+        public Vector3 LocalPosition;
+        public LayerMask CullingMask;
+    };
+
     [Header("Perspective")]
     [SerializeField]
-    private Vector3 firstPersonCameraOffset;
+    private CameraConfiguration firstPersonCameraConfig;
     [SerializeField]
-    private Vector3 thirdPersonCameraOffset;
+    private CameraConfiguration thirdPersonCameraConfig;
     [SerializeField]
     private float perspectiveTransitionTime;
     [SerializeField]
     private bool defaultThirdPerson = true;
+
+    [Header("Component References")]
+    [SerializeField]
+    private new Camera camera = null;
+    [SerializeField]
+    private Reticle reticle = null;
 
     private bool perspectiveIsTransitioning = false;
 
@@ -27,7 +40,7 @@ public class PlayerCamera : MonoBehaviour
             if (!perspectiveIsTransitioning && isThirdPerson != value)
             {
                 isThirdPerson = value;
-                SetPerspective(isThirdPerson);
+                StartCoroutine(UpdatePerspectiveCoroutine(isThirdPerson, false));
             }
         }
     }
@@ -35,31 +48,28 @@ public class PlayerCamera : MonoBehaviour
     private void Awake()
     {
         isThirdPerson = defaultThirdPerson;
-        SetPerspective(isThirdPerson, true);
+        StartCoroutine(UpdatePerspectiveCoroutine(isThirdPerson, true));
     }
 
-    private void SetPerspective(bool thirdPerson, bool snap = false)
+    private IEnumerator UpdatePerspectiveCoroutine(bool thirdPerson, bool snap)
     {
-        IsThirdPerson = thirdPerson;
-
-        Vector3 initialOffset = thirdPerson ? firstPersonCameraOffset : thirdPersonCameraOffset;
-        Vector3 targetOffset = thirdPerson ? thirdPersonCameraOffset : firstPersonCameraOffset;
+        CameraConfiguration initialConfig = thirdPerson ? firstPersonCameraConfig : thirdPersonCameraConfig;
+        CameraConfiguration targetConfig = thirdPerson ? thirdPersonCameraConfig : firstPersonCameraConfig;
         float transitionTime = snap ? 0.0f : perspectiveTransitionTime;
-        StartCoroutine(RunUpdatePerspective(initialOffset, targetOffset, transitionTime));
-    }
 
-    private IEnumerator RunUpdatePerspective(Vector3 initialCameraOffset, Vector3 targetCameraOffset, float duration)
-    {
         perspectiveIsTransitioning = true;
 
         float timer = 0.0f;
-        while (timer < duration)
+        while (timer < transitionTime)
         {
-            transform.localPosition = Vector3.Lerp(initialCameraOffset, targetCameraOffset, timer / perspectiveTransitionTime);
+            transform.localPosition = Vector3.Lerp(initialConfig.LocalPosition, targetConfig.LocalPosition, timer / perspectiveTransitionTime);
             yield return new WaitForSeconds(Time.deltaTime);
             timer += Time.deltaTime;
         }
-        transform.localPosition = targetCameraOffset;
+        transform.localPosition = targetConfig.LocalPosition;
+
+        camera.cullingMask = targetConfig.CullingMask;
+        reticle.UseThirdPersonReticle = thirdPerson;
 
         perspectiveIsTransitioning = false;
     }

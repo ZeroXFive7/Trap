@@ -31,13 +31,21 @@ public class CharacterHealth : MonoBehaviour
         IsDead = false;
         HitPoints = initialHitPoints;
 
-        steering.MoveTowards(spawnPoint.position, 0.0f, true);
+        steering.SnapToPosition(spawnPoint.position);
     }
 
     public void Die()
     {
         HitPoints = 0.0f;
         IsDead = true;
+    }
+
+    public void Respawn()
+    {
+        Die();
+
+        Transform spawnPoint = GameplayManager.Instance.CurrentLevel.GetRandomSpawnPoint();
+        Spawn(spawnPoint);
     }
 
     private void Start()
@@ -50,10 +58,7 @@ public class CharacterHealth : MonoBehaviour
     {
         if (other.gameObject.LayerIsInLayerMask(safeVolumeLayers))
         {
-            Die();
-
-            Transform spawnPoint = GameplayManager.Instance.CurrentLevel.GetClosestSpawnPoint(transform.position);
-            Spawn(spawnPoint);
+            Respawn();
         }
     }
 }

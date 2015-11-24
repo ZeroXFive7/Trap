@@ -8,6 +8,8 @@ public class MeleeAttack : MonoBehaviour
     [SerializeField]
     private Transform meleeWeaponOrigin = null;
     [SerializeField]
+    private float duration = 0.1f;
+    [SerializeField]
     private float cooldown = 0.1f;
 
     [Header("Component References")]
@@ -26,8 +28,8 @@ public class MeleeAttack : MonoBehaviour
     {
         if ((Time.time - previousAttackTime) >= cooldown)
         {
-            character.Animator.MeleeAttack();
             previousAttackTime = Time.time;
+            StartCoroutine(AttackCoroutine());
         }
     }
 
@@ -35,5 +37,32 @@ public class MeleeAttack : MonoBehaviour
     {
         MeleeWeapon = Instantiate(prefab);
         MeleeWeapon.transform.SetParent(meleeWeaponOrigin, false);
+        MeleeWeapon.CollidedWithCharacter += OnWeaponCollidedWithCharacter;
+    }
+
+    private void OnWeaponCollidedWithCharacter(Character other, Vector3 position)
+    {
+        if (other == character)
+        {
+            return;
+        }
+
+        Vector3 otherDirection = (Vector3.up + other.transform.position - transform.position).normalized;
+        other.Movement.Impulse(otherDirection);
+    }
+
+    private IEnumerator AttackCoroutine()
+    {
+        MeleeWeapon.CanCollide = true;
+        character.Animator.MeleeAttack();
+
+        float timer = 0.0f;
+        while (timer < duration)
+        {
+            yield return new WaitForSeconds(Time.deltaTime);
+            timer += Time.deltaTime;
+        }
+
+        MeleeWeapon.CanCollide = false;
     }
 }

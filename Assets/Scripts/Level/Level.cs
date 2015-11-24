@@ -20,4 +20,10 @@ public class Level : MonoBehaviour
         }
         return closestSpawnPoint;
     }
+
+    public Transform GetRandomSpawnPoint()
+    {
+        int randomIndex = Random.Range(0, spawnPoints.Length - 1);
+        return spawnPoints[randomIndex];
+    }
 }

@@ -8,13 +8,15 @@ public class Character : MonoBehaviour
     [SerializeField]
     private CharacterMovement movement = null;
     [SerializeField]
-    private CharacterAim aim = null;
+    private CharacterAiming aiming = null;
     [SerializeField]
     private new CharacterController collider = null;
     [SerializeField]
     private MeleeAttack meleeAttack = null;
     [SerializeField]
     private CharacterAnimator animator = null;
+    [SerializeField]
+    private new MeshRenderer renderer = null;
 
     public CharacterHealth Health
     {
@@ -26,9 +28,9 @@ public class Character : MonoBehaviour
         get { return movement; }
     }
 
-    public CharacterAim Aim
+    public CharacterAiming Aiming
     {
-        get { return aim; }
+        get { return aiming; }
     }
 
     public CharacterController Collider
@@ -44,5 +46,10 @@ public class Character : MonoBehaviour
     public CharacterAnimator Animator
     {
         get { return animator; }
+    }
+
+    public MeshRenderer Renderer
+    {
+        get { return renderer; }
     }
 }

@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 
-public class CharacterAim : MonoBehaviour
+public class CharacterAiming : MonoBehaviour
 {
+    [SerializeField]
+    private float yawSpeed = 200.0f;
+    [SerializeField]
+    private float pitchSpeed = 200.0f;
     [SerializeField]
     private float minYawAngle = 10.0f;
 
@@ -9,17 +13,17 @@ public class CharacterAim : MonoBehaviour
     [SerializeField]
     private Character character = null;
 
-    public void AimAt(float yaw, float pitch)
+    public void Aim(float yaw, float pitch)
     {
         // Yaw.
-        float deltaYaw = yaw * Time.deltaTime;
+        float deltaYaw = yaw * yawSpeed * Time.deltaTime;
         transform.parent.Rotate(Vector3.up * deltaYaw, Space.Self);
 
         // Pitch.
         Vector3 previousPosition = transform.position;
         Quaternion previousRotation = transform.rotation;
 
-        float deltaPitch = pitch * Time.deltaTime;
+        float deltaPitch = pitch * pitchSpeed * Time.deltaTime;
         transform.RotateAround(transform.parent.position, transform.parent.right, deltaPitch);
 
         // Avoid gimble lock by disallowing rotations that align forward vector with world up.

@@ -2,42 +2,32 @@
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    private PlayerInput input = null;
-    [SerializeField]
-    private new PlayerCamera camera = null;
-    [SerializeField]
-    private Character character = null;
-
-    [SerializeField]
-    private float yawAimSpeed = 200.0f;
-    [SerializeField]
-    private float pitchAimSpeed = 200.0f;
+    public PlayerInput Input = null;
+    public PlayerCamera Camera = null;
+    public Character Character = null;
 
     private void Update()
     {
-        PlayerInput.InputData currentInput = input.CurrentInput;
+        PlayerInput.InputData currentInput = Input.CurrentInput;
 
         // Move.
-        Vector3 steeringDirection = new Vector3(currentInput.Movement.x, 0.0f, currentInput.Movement.y);
-        steeringDirection = transform.TransformDirection(steeringDirection);
-        character.Movement.MoveTowards(transform.position + steeringDirection, 0.0f);
+        Character.Movement.Move(new Vector3(currentInput.Movement.x, 0.0f, currentInput.Movement.y));
 
         // Aim.
-        character.Aim.AimAt(currentInput.Look.x * pitchAimSpeed, currentInput.Look.y * yawAimSpeed);
+        Character.Aiming.Aim(currentInput.Look.x, currentInput.Look.y);
 
-        camera.IsThirdPerson = !currentInput.AimDownSights;
+        Camera.IsThirdPerson = !currentInput.AimDownSights;
 
         // Jump.
         if (currentInput.Jump)
         {
-            character.Movement.Jump();
+            Character.Movement.Jump();
         }
 
         // Attack.
         if (currentInput.Attack)
         {
-            character.MeleeAttack.Attack();
+            Character.MeleeAttack.Attack();
         }
     }
 }

@@ -41,10 +41,29 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    [SerializeField]
-    private InputAxesConfiguration controllerConfig;
-    [SerializeField]
-    private InputAxesConfiguration keyboardMouseConfig;
+    private static readonly InputAxesConfiguration controllerConfig = new InputAxesConfiguration
+    {
+        MovementHorizontalAxisName = "MovementHorizontalController",
+        MovementVerticalAxisName= "MovementVerticalController",
+        LookHorizontalAxisName = "LookHorizontalController",
+        LookVerticalAxisName = "LookVerticalController",
+        AimDownSightsAxisName = "AimDownSightsController",
+        AttackAxisName = "AttackController",
+        JumpAxisName = "JumpController",
+        ContextSensitiveActionAxisName = "ContextSensitiveActionController"
+    };
+
+    private static readonly InputAxesConfiguration keyboardMouseConfig = new InputAxesConfiguration
+    {
+        MovementHorizontalAxisName = "MovementHorizontalKeyboardMouse",
+        MovementVerticalAxisName = "MovementVerticalKeyboardMouse",
+        LookHorizontalAxisName = "LookHorizontalKeyboardMouse",
+        LookVerticalAxisName = "LookVerticalKeyboardMouse",
+        AimDownSightsAxisName = "AimDownSightsKeyboardMouse",
+        AttackAxisName = "AttackKeyboardMouse",
+        JumpAxisName = "JumpKeyboardMouse",
+        ContextSensitiveActionAxisName = "ContextSensitiveActionKeyboardMouse"
+    };
 
     private InputData emptyInput = new InputData();
     private InputData controllerInput = new InputData();
