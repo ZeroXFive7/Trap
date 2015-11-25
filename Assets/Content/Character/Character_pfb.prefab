@@ -183,6 +183,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   locomotionSpeed: 10
+  locomotionTimeToMaxAcceleration: .100000001
+  locomotionMaxAcceleration: 1000
   locomotionFallingAcceleration: 10
   sprintingSpeed: 20
   gravityAcceleration: {x: 0, y: -20, z: 0}
@@ -333,6 +335,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: characterBodyLayer.m_Bits
       value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: locomotionMaxAcceleration
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: locomotionTimeToMaxAcceleration
+      value: .100000001
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

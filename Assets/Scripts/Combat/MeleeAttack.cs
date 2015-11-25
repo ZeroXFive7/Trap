@@ -84,8 +84,8 @@ public class MeleeAttack : MonoBehaviour
             return;
         }
 
-        Vector3 otherDirection = (Vector3.up + other.transform.position - transform.position).normalized;
-        other.Movement.Impulse(otherDirection * impulseMagnitude);
+        Vector3 otherDirection = (other.transform.position - transform.position).normalized;
+        other.Movement.Impulse(otherDirection * impulseMagnitude, 1.0f);
     }
 
     private IEnumerator AttackCoroutine()

@@ -6,12 +6,18 @@ public class PlayerController : MonoBehaviour
     public PlayerCamera Camera = null;
     public Character Character = null;
 
+    [SerializeField]
+    private float dashForce = 5.0f;
+    [SerializeField]
+    private float dashTime = 0.2f;
+
     private void Update()
     {
         PlayerInput.InputData currentInput = Input.CurrentInput;
 
         // Move.
-        Character.Movement.Move(new Vector3(currentInput.Movement.x, 0.0f, currentInput.Movement.y), currentInput.Sprint);
+        Vector3 moveDirection = transform.TransformDirection(new Vector3(currentInput.Movement.x, 0.0f, currentInput.Movement.y));
+        Character.Movement.Move(moveDirection, currentInput.Sprint);
 
         // Aim.
         Character.Aiming.Aim(currentInput.Look.x, currentInput.Look.y);
@@ -27,6 +33,7 @@ public class PlayerController : MonoBehaviour
         // Attack.
         if (currentInput.Attack)
         {
+            //Character.Movement.Impulse(moveDirection * dashForce, dashTime);
             Character.MeleeAttack.Attack();
         }
 
