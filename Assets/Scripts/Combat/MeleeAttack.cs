@@ -14,9 +14,16 @@ public class MeleeAttack : MonoBehaviour
     [SerializeField]
     private float impulseMagnitude = 20.0f;
 
+    [SerializeField]
+    private float attackRangeSpherecastRadius = 0.1f;
+    [SerializeField]
+    private float attackRangeSpherecastDistance = 0.5f;
+
     [Header("Component References")]
     [SerializeField]
     private Character character = null;
+
+    private float previousAttackTime = 0.0f;
 
     [HideInInspector]
     public MeleeWeapon MeleeWeapon
@@ -24,7 +31,7 @@ public class MeleeAttack : MonoBehaviour
         get; private set;
     }
 
-    private float previousAttackTime = 0.0f;
+    public bool CharacterInAttackRange { get; private set; }
 
     public void Attack()
     {
@@ -40,9 +47,37 @@ public class MeleeAttack : MonoBehaviour
         MeleeWeapon = Instantiate(prefab);
         MeleeWeapon.transform.SetParent(meleeWeaponOrigin, false);
         MeleeWeapon.CollidedWithCharacter += OnWeaponCollidedWithCharacter;
+
+        CharacterInAttackRange = false;
     }
 
-    private void OnWeaponCollidedWithCharacter(Character other, Vector3 position)
+    private void Update()
+    {
+        CharacterInAttackRange = false;
+
+        Vector3 attackDirection = character.Aiming.transform.forward;
+        Vector3 attackOrigin = character.Aiming.transform.position;
+
+        RaycastHit[] hits = Physics.SphereCastAll(
+            attackOrigin, 
+            attackRangeSpherecastRadius, 
+            attackDirection, 
+            attackRangeSpherecastDistance);
+
+        for (int i = 0; i < hits.Length; ++i)
+        {
+            CharacterMeleeBodyCollider characterBody = hits[i].transform.GetComponent<CharacterMeleeBodyCollider>();
+            if (characterBody == null || characterBody.Character == this.character)
+            {
+                continue;
+            }
+
+            CharacterInAttackRange = true;
+            break;
+        }
+    }
+
+    private void OnWeaponCollidedWithCharacter(Character other, Vector3 direction)
     {
         if (other == character)
         {
@@ -66,5 +101,11 @@ public class MeleeAttack : MonoBehaviour
         }
 
         MeleeWeapon.CanCollide = false;
+    }
+
+    private void Knockback(Character other)
+    {
+        Vector3 attackDirection = Vector3.ProjectOnPlane((other.transform.position - transform.position), Vector3.up).normalized;
+
     }
 }

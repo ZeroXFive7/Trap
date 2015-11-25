@@ -2,26 +2,58 @@
 
 public class MeleeWeapon : MonoBehaviour
 {
+    [Tooltip("X axis is vertical impact distance from top of character collider.  Y axis is knockback angle from XZ plane.")]
     [SerializeField]
-    private LayerMask characterBodyLayer;
+    private AnimationCurve verticalKnockbackAngleCurve;
+    [Tooltip("X axis is horizontal impact distance from center of character collider.  Y axis is knockback angle from YZ plane.")]
+    [SerializeField]
+    private AnimationCurve horizontalKnockbackAngleCurve;
+    [SerializeField]
+    private MeleeWeaponCollider[] colliders = null;
 
     public event System.Action<Character, Vector3> CollidedWithCharacter;
 
-    public bool CanCollide = false;
-
-    private void OnTriggerEnter(Collider other)
+    public bool CanCollide
     {
-        if (!CanCollide)
+        set
+        {
+            for (int i = 0; i < colliders.Length; ++i)
+            {
+                colliders[i].enabled = value;
+            }
+        }
+    }
+
+    private void Awake()
+    {
+        CanCollide = false;
+    }
+
+    private void Update()
+    {
+        if (CollidedWithCharacter == null)
         {
             return;
         }
 
-        CharacterMeleeBodyCollider characterBody = other.GetComponent<CharacterMeleeBodyCollider>();
-        if (characterBody == null || CollidedWithCharacter == null)
+        for (int i = 0; i < colliders.Length; ++i)
         {
-            return;
-        }
+            RaycastHit[] collisions = colliders[i].Collisions;
+            if (collisions == null)
+            {
+                continue;
+            }
 
-        CollidedWithCharacter(characterBody.Character, Vector3.zero);
+            for (int j = 0; j < collisions.Length; ++j)
+            {
+                CharacterMeleeBodyCollider characterBody = collisions[j].transform.GetComponent<CharacterMeleeBodyCollider>();
+                if (characterBody == null)
+                {
+                    continue;
+                }
+
+                CollidedWithCharacter(characterBody.Character, collisions[j].point);
+            }
+        }
     }
 }

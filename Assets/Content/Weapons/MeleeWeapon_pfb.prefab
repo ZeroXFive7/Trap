@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &104220
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 480826}
+  - 114: {fileID: 11477878}
+  m_Layer: 0
+  m_Name: Collider4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &117052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 456598}
+  - 114: {fileID: 11441358}
+  m_Layer: 0
+  m_Name: Collider1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &122288
 GameObject:
   m_ObjectHideFlags: 0
@@ -35,6 +67,50 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &192704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 455888}
+  - 114: {fileID: 11407184}
+  m_Layer: 0
+  m_Name: Collider2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &199798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 404882}
+  - 114: {fileID: 11429970}
+  m_Layer: 0
+  m_Name: Collider3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &404882
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 199798}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: .593999982, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 468962}
+  m_RootOrder: 2
 --- !u!4 &424402
 Transform:
   m_ObjectHideFlags: 1
@@ -44,6 +120,30 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: .649999976, z: 0}
   m_LocalScale: {x: .200000003, y: 1.29999995, z: .200000003}
+  m_Children: []
+  m_Father: {fileID: 468962}
+  m_RootOrder: 4
+--- !u!4 &455888
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 192704}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: .864000022, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 468962}
+  m_RootOrder: 1
+--- !u!4 &456598
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 117052}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.16299999, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 468962}
   m_RootOrder: 0
@@ -57,9 +157,25 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 456598}
+  - {fileID: 455888}
+  - {fileID: 404882}
+  - {fileID: 480826}
   - {fileID: 424402}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!4 &480826
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104220}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: .293000013, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 468962}
+  m_RootOrder: 3
 --- !u!23 &2358914
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -118,6 +234,54 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &11407184
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 192704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87c6ae32ff1cf8d4ab3728481d16b35e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: .200000003
+--- !u!114 &11429970
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 199798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87c6ae32ff1cf8d4ab3728481d16b35e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: .200000003
+--- !u!114 &11441358
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 117052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87c6ae32ff1cf8d4ab3728481d16b35e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: .200000003
+--- !u!114 &11477878
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87c6ae32ff1cf8d4ab3728481d16b35e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: .200000003
 --- !u!114 &11495122
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -129,10 +293,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e70071723fce35845ade0006a8b8ab7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterBodyLayer:
+  verticalKnockbackAngleCurve:
     serializedVersion: 2
-    m_Bits: 512
-  CanCollide: 0
+    m_Curve:
+    - time: 0
+      value: 5.01846743
+      inSlope: 19.4085312
+      outSlope: 19.4085312
+      tangentMode: 0
+    - time: 1
+      value: 60.0177612
+      inSlope: 28.1783638
+      outSlope: 28.1783638
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  horizontalKnockbackAngleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: -1
+      value: -30.0046158
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 29.9565334
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  colliders:
+  - {fileID: 11441358}
+  - {fileID: 11407184}
+  - {fileID: 11429970}
+  - {fileID: 11477878}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -140,6 +335,14 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: verticalKnockbackAngleCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: horizontalKnockbackAngleCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Layer
       value: 10
@@ -151,6 +354,54 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: characterBodyLayer.m_Bits
       value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: verticalKnockbackAngleCurve.m_Curve.Array.data[0].value
+      value: 5.01846743
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: verticalKnockbackAngleCurve.m_Curve.Array.data[1].value
+      value: 60.0177612
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: verticalKnockbackAngleCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: verticalKnockbackAngleCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: verticalKnockbackAngleCurve.m_Curve.Array.data[0].inSlope
+      value: 19.4085312
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: verticalKnockbackAngleCurve.m_Curve.Array.data[0].outSlope
+      value: 19.4085312
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: verticalKnockbackAngleCurve.m_Curve.Array.data[1].inSlope
+      value: 28.1783638
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: verticalKnockbackAngleCurve.m_Curve.Array.data[1].outSlope
+      value: 28.1783638
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: horizontalKnockbackAngleCurve.m_Curve.Array.data[0].time
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: horizontalKnockbackAngleCurve.m_Curve.Array.data[0].value
+      value: -30.0046158
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: horizontalKnockbackAngleCurve.m_Curve.Array.data[1].value
+      value: 29.9565334
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: horizontalKnockbackAngleCurve.m_Curve.Array.data[1].time
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

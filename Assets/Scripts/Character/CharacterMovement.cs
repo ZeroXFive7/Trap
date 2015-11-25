@@ -28,14 +28,12 @@ public class CharacterMovement : MonoBehaviour
 
     private Vector3 movementVelocity = Vector3.zero;
     private Vector3 locomotionVelocity = Vector3.zero;
-    private Vector3 jumpVelocity = Vector3.zero;
     private Vector3 impulseVelocity = Vector3.zero;
 
     public void SnapToPosition(Vector3 position)
     {
         movementVelocity = Vector3.zero;
         locomotionVelocity = Vector3.zero;
-        jumpVelocity = Vector3.zero;
         impulseVelocity = Vector3.zero;
 
         transform.position = position;
@@ -48,7 +46,10 @@ public class CharacterMovement : MonoBehaviour
 
     public void Jump()
     {
-        jumpVelocity = -gravityAcceleration.normalized * jumpSpeed;
+        if (character.Collider.isGrounded)
+        {
+            impulseVelocity = -gravityAcceleration.normalized * jumpSpeed;
+        }
     }
 
     public void Impulse(Vector3 force)
@@ -58,10 +59,12 @@ public class CharacterMovement : MonoBehaviour
 
     private void Update()
     {
+        float linearMovementSpeed = 0.0f;
+
         if (character.Collider.isGrounded)
         {
-            movementVelocity = locomotionVelocity + jumpVelocity;
-            character.Animator.LinearMovementSpeed = locomotionVelocity.magnitude;
+            movementVelocity = locomotionVelocity;
+            linearMovementSpeed = movementVelocity.magnitude;
         }
         else
         {
@@ -72,10 +75,10 @@ public class CharacterMovement : MonoBehaviour
         movementVelocity += impulseVelocity;
 
         character.Collider.Move(movementVelocity * Time.deltaTime);
+        character.Animator.LinearMovementSpeed = linearMovementSpeed;
 
         // Reset state.
         locomotionVelocity = Vector3.zero;
-        jumpVelocity = Vector3.zero;
         impulseVelocity = Vector3.zero;
     }
 }

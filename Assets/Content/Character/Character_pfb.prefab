@@ -184,6 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locomotionSpeed: 10
   locomotionFallingAcceleration: 10
+  sprintingSpeed: 20
   gravityAcceleration: {x: 0, y: -20, z: 0}
   jumpSpeed: 10
   character: {fileID: 11440530}
@@ -219,6 +220,9 @@ MonoBehaviour:
   meleeWeaponOrigin: {fileID: 416240}
   duration: .100000001
   cooldown: 1
+  impulseMagnitude: 20
+  attackRangeSpherecastRadius: .100000001
+  attackRangeSpherecastDistance: .5
   character: {fileID: 11440530}
 --- !u!114 &11432184
 MonoBehaviour:
@@ -325,6 +329,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: jumpSpeed
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: characterBodyLayer.m_Bits
+      value: 512
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

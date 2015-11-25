@@ -26,6 +26,11 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField]
     private Reticle reticle = null;
 
+    public Reticle Reticle
+    {
+        get { return reticle; }
+    }
+
     private bool perspectiveIsTransitioning = false;
 
     private bool isThirdPerson = true;

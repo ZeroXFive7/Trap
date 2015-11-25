@@ -29,5 +29,7 @@ public class PlayerController : MonoBehaviour
         {
             Character.MeleeAttack.Attack();
         }
+
+        Camera.Reticle.HighlightRed = Character.MeleeAttack.CharacterInAttackRange;
     }
 }

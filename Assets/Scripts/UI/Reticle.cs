@@ -18,6 +18,8 @@ public class Reticle : MonoBehaviour
 
     public bool UseThirdPersonReticle = true;
 
+    public bool HighlightRed = false;
+
     private void OnGUI()
     {
         ReticleLayout currentReticle = UseThirdPersonReticle ? thirdPersonReticle: firstPersonReticle;
@@ -32,6 +34,14 @@ public class Reticle : MonoBehaviour
             width, 
             height);
 
+        if (HighlightRed)
+        {
+            GUI.color = Color.red;
+        }
+        else
+        {
+            GUI.color = Color.white;
+        }
         GUI.DrawTexture(rect, currentReticle.Texture);
     }
 }
