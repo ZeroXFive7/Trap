@@ -14,7 +14,6 @@ public class MeleeAttack : MonoBehaviour
     private float cooldown = 0.1f;
     [SerializeField]
     private float impulseMagnitude = 20.0f;
-
     [SerializeField]
     private float attackRangeSpherecastRadius = 0.1f;
     [SerializeField]
@@ -25,8 +24,6 @@ public class MeleeAttack : MonoBehaviour
     private Character character = null;
 
     private float previousAttackTime = 0.0f;
-
-    private Vector3 lastHitDirection;
 
     private HashSet<Character> charactersHitThisAttack = new HashSet<Character>();
 
@@ -40,6 +37,11 @@ public class MeleeAttack : MonoBehaviour
 
     public void Attack()
     {
+        if (!enabled)
+        {
+            return;
+        }
+
         if ((Time.time - previousAttackTime) >= cooldown)
         {
             previousAttackTime = Time.time;
@@ -54,6 +56,16 @@ public class MeleeAttack : MonoBehaviour
         MeleeWeapon.CollidedWithCharacter += OnWeaponCollidedWithCharacter;
 
         CharacterInAttackRange = false;
+    }
+
+    private void OnEnable()
+    {
+        meleeWeaponOrigin.gameObject.SetActive(true);
+    }
+
+    private void OnDisable()
+    {
+        meleeWeaponOrigin.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -71,7 +83,7 @@ public class MeleeAttack : MonoBehaviour
 
         for (int i = 0; i < hits.Length; ++i)
         {
-            CharacterMeleeBodyCollider characterBody = hits[i].transform.GetComponent<CharacterMeleeBodyCollider>();
+            CharacterBodyCollider characterBody = hits[i].transform.GetComponent<CharacterBodyCollider>();
             if (characterBody == null || characterBody.Character == this.character)
             {
                 continue;
@@ -99,11 +111,8 @@ public class MeleeAttack : MonoBehaviour
         float popAngle = MeleeWeapon.KnockbackPopAngleCurve.Evaluate(angle);
         float knockbackForce = MeleeWeapon.KnockbackForceCurve.Evaluate(angle);
 
-        Debug.Log("angle: " + angle + ", pop: " + popAngle + ", force: " + knockbackForce);
         Vector3 knockbackDirection = Quaternion.AngleAxis(-popAngle, transform.right) * Quaternion.AngleAxis(angle, transform.up) * transform.forward;
         other.Movement.Impulse(knockbackDirection * knockbackForce, 0.5f);
-
-        lastHitDirection = knockbackDirection;
     }
 
     private IEnumerator AttackCoroutine()
@@ -120,14 +129,5 @@ public class MeleeAttack : MonoBehaviour
         }
 
         MeleeWeapon.CanCollide = false;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, transform.position + lastHitDirection);
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + transform.forward);
     }
 }

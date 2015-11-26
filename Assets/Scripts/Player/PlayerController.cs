@@ -56,6 +56,8 @@ public class PlayerController : MonoBehaviour
         Character.Aiming.Aim(playerInput.GetAxis("Look Horizontal"), playerInput.GetAxis("Look Vertical"));
 
         Camera.IsThirdPerson = !playerInput.GetButton("Toggle Perspective");
+        Character.MeleeAttack.enabled = Camera.IsThirdPerson;
+        Character.RangedAttack.enabled = !Camera.IsThirdPerson;
 
         // Jump.
         if (playerInput.GetButton("Jump"))
@@ -66,7 +68,14 @@ public class PlayerController : MonoBehaviour
         // Attack.
         if (playerInput.GetButton("Fire"))
         {
-            Character.MeleeAttack.Attack();
+            if (Camera.IsThirdPerson)
+            {
+                Character.MeleeAttack.Attack();
+            }
+            else
+            {
+                Character.RangedAttack.Fire();
+            }
         }
 
         // Dash.

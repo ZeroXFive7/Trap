@@ -88,7 +88,7 @@ public class MeleeWeapon : MonoBehaviour
 
             for (int collisionIndex = 0; collisionIndex < collisions.Length; ++collisionIndex)
             {
-                CharacterMeleeBodyCollider collidedCharacterBody = collisions[collisionIndex].transform.GetComponent<CharacterMeleeBodyCollider>();
+                CharacterBodyCollider collidedCharacterBody = collisions[collisionIndex].transform.GetComponent<CharacterBodyCollider>();
                 if (collidedCharacterBody == null)
                 {
                     // Can only hit characters.

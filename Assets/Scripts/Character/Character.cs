@@ -14,6 +14,8 @@ public class Character : MonoBehaviour
     [SerializeField]
     private MeleeAttack meleeAttack = null;
     [SerializeField]
+    private RangedAttack rangedAttack = null;
+    [SerializeField]
     private CharacterAnimator animator = null;
     [SerializeField]
     private new MeshRenderer renderer = null;
@@ -41,6 +43,11 @@ public class Character : MonoBehaviour
     public MeleeAttack MeleeAttack
     {
         get { return meleeAttack; }
+    }
+
+    public RangedAttack RangedAttack
+    {
+        get { return rangedAttack; }
     }
 
     public CharacterAnimator Animator
