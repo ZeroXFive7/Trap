@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class CharacterHealth : MonoBehaviour
 {
@@ -13,6 +13,8 @@ public class CharacterHealth : MonoBehaviour
     [Header("Component References")]
     [SerializeField]
     CharacterMovement steering = null;
+
+    private List<Vector3> impactPoints = new List<Vector3>();
 
     public float HitPoints { get; private set; }
 
@@ -48,6 +50,12 @@ public class CharacterHealth : MonoBehaviour
         Spawn(spawnPoint);
     }
 
+    public void AddImpactPoint(Vector3 point)
+    {
+        point = transform.InverseTransformPoint(point);
+        impactPoints.Add(point);
+    }
+
     private void Start()
     {
         IsDead = false;
@@ -59,6 +67,15 @@ public class CharacterHealth : MonoBehaviour
         if (other.gameObject.LayerIsInLayerMask(safeVolumeLayers))
         {
             Respawn();
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.gray;
+        foreach (Vector3 point in impactPoints)
+        {
+            Gizmos.DrawSphere(transform.TransformPoint(point), 0.1f);
         }
     }
 }

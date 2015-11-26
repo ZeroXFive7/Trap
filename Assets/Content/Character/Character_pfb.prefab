@@ -187,6 +187,9 @@ MonoBehaviour:
   locomotionMaxAcceleration: 1000
   locomotionFallingAcceleration: 10
   sprintingSpeed: 20
+  maxSprintDuration: 5
+  dashSpeed: 3
+  dashDuration: .165999994
   gravityAcceleration: {x: 0, y: -20, z: 0}
   jumpSpeed: 10
   character: {fileID: 11440530}
@@ -279,8 +282,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a034e7d21894fe45ab3040b759beb1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yawSpeed: 200
-  pitchSpeed: 200
+  yawSpeed: 100
+  pitchSpeed: 60
   minYawAngle: 10
   character: {fileID: 11440530}
 --- !u!136 &13679956
@@ -343,6 +346,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: locomotionTimeToMaxAcceleration
       value: .100000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: maxSprintDuration
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

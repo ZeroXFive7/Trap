@@ -1,17 +1,55 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class MeleeWeapon : MonoBehaviour
 {
-    [Tooltip("X axis is vertical impact distance from top of character collider.  Y axis is knockback angle from XZ plane.")]
+    private class CharacterCollision
+    {
+        public Character Character;
+        public List<Vector3> CollisionPoints = new List<Vector3>();
+
+        public Vector3 CollisionCentroid
+        {
+            get
+            {
+                Vector3 centroid = Vector3.zero;
+                for (int i =0; i < CollisionPoints.Count; ++i)
+                {
+                    centroid += CollisionPoints[i];
+                }
+                return centroid / (float)CollisionPoints.Count;
+            }
+        }
+    };
+
+    [Tooltip("X axis is angle from player forward vector.  Y axis is knockback angle from XZ plane.")]
     [SerializeField]
-    private AnimationCurve verticalKnockbackAngleCurve;
-    [Tooltip("X axis is horizontal impact distance from center of character collider.  Y axis is knockback angle from YZ plane.")]
+    private AnimationCurve knockbackPopAngleCurve;
+    [Tooltip("X axis is angle of impact vector from player forward vector.  Y axis is force of knockback.")]
     [SerializeField]
-    private AnimationCurve horizontalKnockbackAngleCurve;
+    private AnimationCurve knockbackForceCurve;
     [SerializeField]
-    private MeleeWeaponCollider[] colliders = null;
+    private SpherecastCollider[] colliders = null;
+
+    public AnimationCurve KnockbackPopAngleCurve
+    {
+        get
+        {
+            return knockbackPopAngleCurve;
+        }
+    }
+
+    public AnimationCurve KnockbackForceCurve
+    {
+        get
+        {
+            return knockbackForceCurve;
+        }
+    }
 
     public event System.Action<Character, Vector3> CollidedWithCharacter;
+
+    private List<CharacterCollision> characterCollisions = new List<CharacterCollision>();
 
     public bool CanCollide
     {
@@ -21,6 +59,7 @@ public class MeleeWeapon : MonoBehaviour
             {
                 colliders[i].enabled = value;
             }
+            enabled = value;
         }
     }
 
@@ -33,27 +72,47 @@ public class MeleeWeapon : MonoBehaviour
     {
         if (CollidedWithCharacter == null)
         {
+            // Someone must be listening to character collision events.
             return;
         }
 
-        for (int i = 0; i < colliders.Length; ++i)
+        characterCollisions.Clear();
+
+        for (int colliderIndex = 0; colliderIndex < colliders.Length; ++colliderIndex)
         {
-            RaycastHit[] collisions = colliders[i].Collisions;
+            RaycastHit[] collisions = colliders[colliderIndex].Collisions;
             if (collisions == null)
             {
                 continue;
             }
 
-            for (int j = 0; j < collisions.Length; ++j)
+            for (int collisionIndex = 0; collisionIndex < collisions.Length; ++collisionIndex)
             {
-                CharacterMeleeBodyCollider characterBody = collisions[j].transform.GetComponent<CharacterMeleeBodyCollider>();
-                if (characterBody == null)
+                CharacterMeleeBodyCollider collidedCharacterBody = collisions[collisionIndex].transform.GetComponent<CharacterMeleeBodyCollider>();
+                if (collidedCharacterBody == null)
                 {
+                    // Can only hit characters.
                     continue;
                 }
 
-                CollidedWithCharacter(characterBody.Character, collisions[j].point);
+                int existingCollisionIndex = characterCollisions.FindIndex(c => c.Character == collidedCharacterBody.Character);
+                if (existingCollisionIndex < 0)
+                {
+                    CharacterCollision newCharacterCollision = new CharacterCollision();
+                    newCharacterCollision.Character = collidedCharacterBody.Character;
+                    newCharacterCollision.CollisionPoints.Add(collisions[collisionIndex].point);
+                    characterCollisions.Add(newCharacterCollision);
+                }
+                else
+                {
+                    characterCollisions[existingCollisionIndex].CollisionPoints.Add(collisions[collisionIndex].point);
+                }
             }
+        }
+
+        for (int characterCollisionIndex = 0; characterCollisionIndex < characterCollisions.Count; ++characterCollisionIndex)
+        {
+            CollidedWithCharacter(characterCollisions[characterCollisionIndex].Character, characterCollisions[characterCollisionIndex].CollisionCentroid);
         }
     }
 }

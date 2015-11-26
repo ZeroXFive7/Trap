@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MeleeAttack : MonoBehaviour
 {
@@ -24,6 +25,10 @@ public class MeleeAttack : MonoBehaviour
     private Character character = null;
 
     private float previousAttackTime = 0.0f;
+
+    private Vector3 lastHitDirection;
+
+    private HashSet<Character> charactersHitThisAttack = new HashSet<Character>();
 
     [HideInInspector]
     public MeleeWeapon MeleeWeapon
@@ -77,19 +82,33 @@ public class MeleeAttack : MonoBehaviour
         }
     }
 
-    private void OnWeaponCollidedWithCharacter(Character other, Vector3 direction)
+    private void OnWeaponCollidedWithCharacter(Character other, Vector3 impactPoint)
     {
-        if (other == character)
+        if (other == character || charactersHitThisAttack.Contains(other))
         {
             return;
         }
 
-        Vector3 otherDirection = (other.transform.position - transform.position).normalized;
-        other.Movement.Impulse(otherDirection * impulseMagnitude, 1.0f);
+        charactersHitThisAttack.Add(other);
+
+        other.Health.AddImpactPoint(impactPoint);
+
+        Vector3 impactDirection = (other.transform.position - transform.position).normalized;//.normalized;
+       
+        float angle = MathExtensions.AngleAroundAxis(transform.forward, impactDirection, transform.up);
+        float popAngle = MeleeWeapon.KnockbackPopAngleCurve.Evaluate(angle);
+        float knockbackForce = MeleeWeapon.KnockbackForceCurve.Evaluate(angle);
+
+        Debug.Log("angle: " + angle + ", pop: " + popAngle + ", force: " + knockbackForce);
+        Vector3 knockbackDirection = Quaternion.AngleAxis(-popAngle, transform.right) * Quaternion.AngleAxis(angle, transform.up) * transform.forward;
+        other.Movement.Impulse(knockbackDirection * knockbackForce, 0.5f);
+
+        lastHitDirection = knockbackDirection;
     }
 
     private IEnumerator AttackCoroutine()
     {
+        charactersHitThisAttack.Clear();
         MeleeWeapon.CanCollide = true;
         character.Animator.MeleeAttack();
 
@@ -103,9 +122,12 @@ public class MeleeAttack : MonoBehaviour
         MeleeWeapon.CanCollide = false;
     }
 
-    private void Knockback(Character other)
+    private void OnDrawGizmos()
     {
-        Vector3 attackDirection = Vector3.ProjectOnPlane((other.transform.position - transform.position), Vector3.up).normalized;
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(transform.position, transform.position + lastHitDirection);
 
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward);
     }
 }

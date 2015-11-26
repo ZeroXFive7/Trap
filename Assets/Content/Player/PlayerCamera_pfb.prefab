@@ -13,7 +13,6 @@ GameObject:
   - 124: {fileID: 12452334}
   - 81: {fileID: 8108786}
   - 114: {fileID: 11437388}
-  - 114: {fileID: 11407396}
   m_Layer: 0
   m_Name: PlayerCamera_pfb
   m_TagString: MainCamera
@@ -81,26 +80,6 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 182810}
   m_Enabled: 1
---- !u!114 &11407396
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 182810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee016e5b39c08ad4cb696d3886d8aa57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firstPersonReticle:
-    ScreenSpacePosition: {x: .5, y: .5}
-    ScreenSpaceSize: .200000003
-    Texture: {fileID: 2800000, guid: d79677d79bf8c3046bb5d86a9a760043, type: 3}
-  thirdPersonReticle:
-    ScreenSpacePosition: {x: .5, y: .5}
-    ScreenSpaceSize: .200000003
-    Texture: {fileID: 2800000, guid: 8f1aca06ef6dfa444802fb025afe66b4, type: 3}
-  UseThirdPersonReticle: 1
 --- !u!114 &11437388
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -125,7 +104,6 @@ MonoBehaviour:
   perspectiveTransitionTime: .0659999996
   defaultThirdPerson: 1
   camera: {fileID: 2006392}
-  reticle: {fileID: 11407396}
 --- !u!124 &12452334
 Behaviour:
   m_ObjectHideFlags: 1
@@ -143,7 +121,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: reticle
       value: 
-      objectReference: {fileID: 11407396}
+      objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: firstPersonCameraConfig.CullingMask.m_Bits
       value: 4294967295

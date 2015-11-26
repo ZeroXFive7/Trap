@@ -264,31 +264,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e70071723fce35845ade0006a8b8ab7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  verticalKnockbackAngleCurve:
+  knockbackPopAngleCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
-      value: 5.01846743
-      inSlope: 19.4085312
-      outSlope: 19.4085312
-      tangentMode: 0
-    - time: 1
-      value: 60.0177612
-      inSlope: 28.1783638
-      outSlope: 28.1783638
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  horizontalKnockbackAngleCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: -1
-      value: -30.0046158
+    - time: -29.9815102
+      value: 10.0070515
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 1
-      value: 29.9565334
+    - time: -.0530690625
+      value: 45.002182
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 29.9644394
+      value: 10.0070515
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  knockbackForceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: -30.0079327
+      value: 14.9775982
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: .0188402403
+      value: 25.2065907
+      inSlope: -.00238418579
+      outSlope: -.00238418579
+      tangentMode: 0
+    - time: 30.0365162
+      value: 14.8796463
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -306,6 +316,14 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: knockbackForceCurve.m_Curve.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: knockbackPopAngleCurve.m_Curve.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: verticalKnockbackAngleCurve.m_Curve.Array.size
       value: 2
@@ -373,6 +391,78 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: horizontalKnockbackAngleCurve.m_Curve.Array.data[1].time
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: colliders.Array.data[0].ImpactForceScalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: colliders.Array.data[1].ImpactForceScalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: colliders.Array.data[2].ImpactForceScalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: colliders.Array.data[3].ImpactForceScalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: knockbackPopAngleCurve.m_Curve.Array.data[0].time
+      value: -29.9815102
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: knockbackPopAngleCurve.m_Curve.Array.data[1].value
+      value: 45.002182
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: knockbackPopAngleCurve.m_Curve.Array.data[1].time
+      value: -.0530690625
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: knockbackPopAngleCurve.m_Curve.Array.data[2].time
+      value: 29.9644394
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: knockbackPopAngleCurve.m_Curve.Array.data[2].value
+      value: 10.0070515
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: knockbackPopAngleCurve.m_Curve.Array.data[0].value
+      value: 10.0070515
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: knockbackForceCurve.m_Curve.Array.data[0].time
+      value: -30.0079327
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: knockbackForceCurve.m_Curve.Array.data[0].value
+      value: 14.9775982
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: knockbackForceCurve.m_Curve.Array.data[1].value
+      value: 25.2065907
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: knockbackForceCurve.m_Curve.Array.data[1].time
+      value: .0188402403
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: knockbackForceCurve.m_Curve.Array.data[1].inSlope
+      value: -.00238418579
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: knockbackForceCurve.m_Curve.Array.data[1].outSlope
+      value: -.00238418579
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: knockbackForceCurve.m_Curve.Array.data[2].value
+      value: 14.8796463
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: knockbackForceCurve.m_Curve.Array.data[2].time
+      value: 30.0365162
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

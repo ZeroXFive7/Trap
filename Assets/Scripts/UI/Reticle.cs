@@ -6,8 +6,8 @@ public class Reticle : MonoBehaviour
     [System.Serializable]
     private struct ReticleLayout
     {
-        public Vector2 ScreenSpacePosition;
-        public float ScreenSpaceSize;
+        public Vector2 ViewportRelativePosition;
+        public float ViewportRelativeSize;
         public Texture2D Texture;
     }
 
@@ -16,32 +16,37 @@ public class Reticle : MonoBehaviour
     [SerializeField]
     private ReticleLayout thirdPersonReticle;
 
+    [HideInInspector]
     public bool UseThirdPersonReticle = true;
 
+    [HideInInspector]
     public bool HighlightRed = false;
+
+    [HideInInspector]
+    public Rect Viewport;
 
     private void OnGUI()
     {
         ReticleLayout currentReticle = UseThirdPersonReticle ? thirdPersonReticle: firstPersonReticle;
 
+        float width = Viewport.width * currentReticle.ViewportRelativeSize;
+        float height = Viewport.height * currentReticle.ViewportRelativeSize;
+
+        // Maintain aspect ratio with smalllest dimension.
         float aspectRatio = currentReticle.Texture.width / currentReticle.Texture.height;
-        float width = Screen.width * currentReticle.ScreenSpaceSize;
-        float height = width / aspectRatio;
-
-        Rect rect = new Rect(
-            (currentReticle.ScreenSpacePosition.x * Screen.width) - (width / 2.0f), 
-            (currentReticle.ScreenSpacePosition.y * Screen.height) - (height/ 2.0f), 
-            width, 
-            height);
-
-        if (HighlightRed)
+        if (width < height)
         {
-            GUI.color = Color.red;
+            height = width * aspectRatio;
         }
         else
         {
-            GUI.color = Color.white;
+            width = height / aspectRatio;
         }
-        GUI.DrawTexture(rect, currentReticle.Texture);
+
+        float x = Viewport.x + Viewport.width * currentReticle.ViewportRelativePosition.x - (width / 2.0f);
+        float y = Screen.height - Viewport.y - Viewport.height * currentReticle.ViewportRelativePosition.y - (height / 2.0f);
+
+        GUI.color = HighlightRed ? Color.red : Color.white;
+        GUI.DrawTexture(new Rect(x, y, width, height), currentReticle.Texture);
     }
 }

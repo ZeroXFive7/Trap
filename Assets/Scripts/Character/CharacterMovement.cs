@@ -17,6 +17,14 @@ public class CharacterMovement : MonoBehaviour
     [Header("Sprinting")]
     [SerializeField]
     private float sprintingSpeed = 20.0f;
+    [SerializeField]
+    private float maxSprintDuration = 10.0f;
+
+    [Header("Dashing")]
+    [SerializeField]
+    private float dashSpeed = 3.0f;
+    [SerializeField]
+    private float dashDuration = 0.166f;
 
     [Header("Gravity")]
     [SerializeField]
@@ -34,6 +42,15 @@ public class CharacterMovement : MonoBehaviour
     private Vector3 locomotionVelocity = Vector3.zero;
     private Vector3 impulseVelocity = Vector3.zero;
     private float outOfControlTimer = 0.0f;
+    private float sprintTimer = 0.0f;
+
+    public bool IsSprinting
+    {
+        get
+        {
+            return sprintTimer > 0.0f;
+        }
+    }
 
     public void SnapToPosition(Vector3 position)
     {
@@ -44,9 +61,19 @@ public class CharacterMovement : MonoBehaviour
         transform.position = position;
     }
 
-    public void Move(Vector3 moveDirection, bool sprint)
+    public void Move(Vector3 moveDirection)
     {
-        locomotionVelocity = moveDirection.normalized * (sprint ? sprintingSpeed : locomotionSpeed);
+        if (moveDirection.magnitude <= 0.01f)
+        {
+            sprintTimer = 0.0f;
+        }
+
+        locomotionVelocity = moveDirection.normalized;
+    }
+
+    public void Sprint()
+    {
+        sprintTimer = maxSprintDuration;
     }
 
     public void Jump()
@@ -57,10 +84,14 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
+    public void Dash(Vector3 direction)
+    {
+        Impulse(direction * dashSpeed, dashDuration);
+    }
+
     public void Impulse(Vector3 force, float outOfControlDuration)
     {
         impulseVelocity = force;
-
         outOfControlTimer = Mathf.Max(outOfControlTimer, outOfControlDuration);
     }
 
@@ -68,7 +99,7 @@ public class CharacterMovement : MonoBehaviour
     {
         if (character.Collider.isGrounded && outOfControlTimer <= 0.0f)
         {
-            Vector3 targetMovementVelocity = locomotionVelocity;
+            Vector3 targetMovementVelocity = locomotionVelocity * (IsSprinting ? sprintingSpeed : locomotionSpeed);
             Vector3 acceleration = targetMovementVelocity - movementVelocity;
             acceleration /= locomotionTimeToMaxAcceleration;
             acceleration = Vector3.ClampMagnitude(acceleration, locomotionMaxAcceleration);
@@ -86,9 +117,13 @@ public class CharacterMovement : MonoBehaviour
         }
 
         movementVelocity += impulseVelocity;
-        outOfControlTimer = Mathf.Max(0.0f, outOfControlTimer - Time.deltaTime);
 
+        // Actually move body and resolve collisions.
         character.Collider.Move(movementVelocity * Time.deltaTime);
+
+        // Update timers.
+        outOfControlTimer = Mathf.Max(0.0f, outOfControlTimer - Time.deltaTime);
+        sprintTimer = Mathf.Max(0.0f, sprintTimer - Time.deltaTime);
 
         // Reset state.
         locomotionVelocity = Vector3.zero;

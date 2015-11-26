@@ -23,12 +23,25 @@ public class PlayerCamera : MonoBehaviour
     [Header("Component References")]
     [SerializeField]
     private new Camera camera = null;
-    [SerializeField]
-    private Reticle reticle = null;
 
-    public Reticle Reticle
+    public Rect Viewport
     {
-        get { return reticle; }
+        get
+        {
+            return camera.rect;
+        }
+        set
+        {
+            camera.rect = value;
+        }
+    }
+
+    public string FirstPersonCullLayer
+    {
+        set
+        {
+            firstPersonCameraConfig.CullingMask = ~LayerMask.GetMask(value);
+        }
     }
 
     private bool perspectiveIsTransitioning = false;
@@ -74,8 +87,6 @@ public class PlayerCamera : MonoBehaviour
         transform.localPosition = targetConfig.LocalPosition;
 
         camera.cullingMask = targetConfig.CullingMask;
-        reticle.UseThirdPersonReticle = thirdPerson;
-
         perspectiveIsTransitioning = false;
     }
 }

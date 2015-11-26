@@ -4,7 +4,7 @@
 using UnityEditor;
 #endif
 
-public class MeleeWeaponCollider : MonoBehaviour
+public class SpherecastCollider : MonoBehaviour
 {
     [SerializeField]
     private float radius = 0.0f;
