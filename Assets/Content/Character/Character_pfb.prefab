@@ -141,7 +141,9 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -188,8 +190,9 @@ MonoBehaviour:
   locomotionFallingAcceleration: 10
   sprintingSpeed: 20
   maxSprintDuration: 5
-  dashSpeed: 3
-  dashDuration: .165999994
+  dashSpeed: 20
+  dashDuration: .360000014
+  dashCooldown: 1
   gravityAcceleration: {x: 0, y: -20, z: 0}
   jumpSpeed: 10
   character: {fileID: 11440530}
@@ -350,6 +353,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: maxSprintDuration
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: dashDuration
+      value: .360000014
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: dashSpeed
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

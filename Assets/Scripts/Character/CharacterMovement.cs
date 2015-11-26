@@ -25,6 +25,8 @@ public class CharacterMovement : MonoBehaviour
     private float dashSpeed = 3.0f;
     [SerializeField]
     private float dashDuration = 0.166f;
+    [SerializeField]
+    private float dashCooldown = 1.0f;
 
     [Header("Gravity")]
     [SerializeField]
@@ -43,6 +45,7 @@ public class CharacterMovement : MonoBehaviour
     private Vector3 impulseVelocity = Vector3.zero;
     private float outOfControlTimer = 0.0f;
     private float sprintTimer = 0.0f;
+    private float dashCooldownTimer = 0.0f;
 
     public bool IsSprinting
     {
@@ -86,7 +89,11 @@ public class CharacterMovement : MonoBehaviour
 
     public void Dash(Vector3 direction)
     {
-        Impulse(direction * dashSpeed, dashDuration);
+        if (dashCooldownTimer <= 0.0f)
+        {
+            Impulse(direction * dashSpeed, dashDuration);
+            dashCooldownTimer = dashCooldown;
+        }
     }
 
     public void Impulse(Vector3 force, float outOfControlDuration)
@@ -122,11 +129,17 @@ public class CharacterMovement : MonoBehaviour
         character.Collider.Move(movementVelocity * Time.deltaTime);
 
         // Update timers.
-        outOfControlTimer = Mathf.Max(0.0f, outOfControlTimer - Time.deltaTime);
-        sprintTimer = Mathf.Max(0.0f, sprintTimer - Time.deltaTime);
+        DecrementTimer(ref outOfControlTimer);
+        DecrementTimer(ref sprintTimer);
+        DecrementTimer(ref dashCooldownTimer);
 
         // Reset state.
         locomotionVelocity = Vector3.zero;
         impulseVelocity = Vector3.zero;
+    }
+
+    private void DecrementTimer(ref float timer)
+    {
+        timer = Mathf.Max(0.0f, timer - Time.deltaTime);
     }
 }
