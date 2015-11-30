@@ -112,7 +112,7 @@ public class MeleeAttack : MonoBehaviour
         float knockbackForce = MeleeWeapon.KnockbackForceCurve.Evaluate(angle);
 
         Vector3 knockbackDirection = Quaternion.AngleAxis(-popAngle, transform.right) * Quaternion.AngleAxis(angle, transform.up) * transform.forward;
-        other.Movement.Impulse(knockbackDirection * knockbackForce, 0.5f);
+        other.Movement.Impulse(knockbackDirection * knockbackForce);
     }
 
     private IEnumerator AttackCoroutine()

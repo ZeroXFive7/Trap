@@ -8,6 +8,7 @@ public class CharacterAnimator : MonoBehaviour
     private static readonly int isThirdPersonId = Animator.StringToHash("IsThirdPerson");
     private static readonly int linearMovementSpeedId = Animator.StringToHash("LinearMovementSpeed");
     private static readonly int meleeAttackId = Animator.StringToHash("MeleeAttack");
+    private static readonly int rangedAtttackId = Animator.StringToHash("RangedAttack");
 
     public bool IsThirdPerson
     {
@@ -28,5 +29,10 @@ public class CharacterAnimator : MonoBehaviour
     public void MeleeAttack()
     {
         animator.SetTrigger(meleeAttackId);
+    }
+
+    public void RangedAttack()
+    {
+        animator.SetTrigger(rangedAtttackId);
     }
 }

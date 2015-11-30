@@ -44,13 +44,7 @@ public class PlayerController : MonoBehaviour
         // Move.
         Vector3 localMoveDirection = new Vector3(playerInput.GetAxis("Move Horizontal"), 0.0f, playerInput.GetAxis("Move Vertical"));
         Vector3 moveDirection = transform.TransformDirection(localMoveDirection);
-        Character.Movement.Move(moveDirection);
-
-        // Sprint.
-        if (playerInput.GetButton("Sprint"))
-        {
-            Character.Movement.Sprint();
-        }
+        Character.Movement.Move(moveDirection, playerInput.GetButtonDown("Sprint"));
 
         // Aim.
         Character.Aiming.Aim(playerInput.GetAxis("Look Horizontal"), playerInput.GetAxis("Look Vertical"));
@@ -58,15 +52,16 @@ public class PlayerController : MonoBehaviour
         Camera.IsThirdPerson = !playerInput.GetButton("Toggle Perspective");
         Character.MeleeAttack.enabled = Camera.IsThirdPerson;
         Character.RangedAttack.enabled = !Camera.IsThirdPerson;
+        Character.Animator.IsThirdPerson = Camera.IsThirdPerson;
 
         // Jump.
-        if (playerInput.GetButton("Jump"))
+        if (playerInput.GetButtonDown("Jump"))
         {
             Character.Movement.Jump();
         }
 
         // Attack.
-        if (playerInput.GetButton("Fire"))
+        if (playerInput.GetButtonDown("Fire"))
         {
             if (Camera.IsThirdPerson)
             {
@@ -79,7 +74,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Dash.
-        if (playerInput.GetButton("Dash"))
+        if (playerInput.GetButtonDown("Dash"))
         {
             Vector3 dashDirection = Character.transform.forward;
             if (moveDirection.magnitude >= 0.01f)

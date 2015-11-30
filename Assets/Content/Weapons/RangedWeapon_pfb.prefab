@@ -466,13 +466,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f159de773e3974b9147ef78f3cc816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  knockbackForce: 10
+  recoilDuration: .200000003
+  recoilPitchYaw: {x: -100, y: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: knockbackForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: recoilYawPitchAngle.y
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: recoilYawPitchSpeed.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: recoilPitchYaw.x
+      value: -100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 185882}

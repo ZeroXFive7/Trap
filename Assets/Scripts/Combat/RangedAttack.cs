@@ -13,6 +13,7 @@ public class RangedAttack : MonoBehaviour
     private Character character = null;
 
     HashSet<Character> charactersHitThisAttack = new HashSet<Character>();
+    private float previousAttackTime = 0.0f;
 
     public RangedWeapon RangedWeapon
     {
@@ -21,6 +22,13 @@ public class RangedAttack : MonoBehaviour
 
     public void Fire()
     {
+        if (!enabled || (Time.time - previousAttackTime) < RangedWeapon.RecoilDuration)
+        {
+            return;
+        }
+
+        previousAttackTime = Time.time;
+
         charactersHitThisAttack.Clear();
 
         RaycastHit[] hits = Physics.RaycastAll(transform.position, transform.forward);
@@ -36,9 +44,11 @@ public class RangedAttack : MonoBehaviour
             if (colliderCharacter != this.character && !charactersHitThisAttack.Contains(colliderCharacter))
             {
                 charactersHitThisAttack.Add(colliderCharacter);
-                colliderCharacter.Movement.Impulse(transform.forward * RangedWeapon.KnockbackForce, 0.1f);
+                colliderCharacter.Movement.Impulse(transform.forward * RangedWeapon.KnockbackForce);
             }
         }
+
+        character.Aiming.Impulse(RangedWeapon.RecoilPitchYaw, RangedWeapon.RecoilDuration);
     }
 
     private void Awake()
