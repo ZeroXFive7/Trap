@@ -216,6 +216,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c6ae32ff1cf8d4ab3728481d16b35e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 15872
   radius: .200000003
 --- !u!114 &11429970
 MonoBehaviour:
@@ -228,6 +231,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c6ae32ff1cf8d4ab3728481d16b35e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 15872
   radius: .200000003
 --- !u!114 &11441358
 MonoBehaviour:
@@ -240,6 +246,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c6ae32ff1cf8d4ab3728481d16b35e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 15872
   radius: .200000003
 --- !u!114 &11477878
 MonoBehaviour:
@@ -252,6 +261,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c6ae32ff1cf8d4ab3728481d16b35e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 15872
   radius: .200000003
 --- !u!114 &11495122
 MonoBehaviour:

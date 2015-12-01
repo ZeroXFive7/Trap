@@ -20,6 +20,13 @@ public class CharacterAiming : MonoBehaviour
 
     private Vector2 currentRotation = Vector2.zero;
 
+    private ImpulseSolver impulses = new ImpulseSolver();
+
+    public Vector2 CurrentRotation
+    {
+        get { return currentRotation; }
+    }
+
     public void Aim(float yaw, float pitch)
     {
         Vector2 aimRotation = new Vector2(pitch * pitchSpeed, yaw * yawSpeed);
@@ -27,38 +34,20 @@ public class CharacterAiming : MonoBehaviour
         currentRotation = ClampRotation(currentRotation);
     }
 
-    public void Impulse(Vector2 impulse, float duration)
+    public void Impulse(Vector2 initialVelocity, float duration)
     {
-        StartCoroutine(ImpulseCoroutine(impulse, duration));
+        impulses.AddImpulseForDuration(initialVelocity, duration, true);
     }
 
     private void Update()
     {
+        impulses.Update(Time.deltaTime);
+
+        currentRotation += (Vector2)impulses.TotalVelocity * Time.deltaTime;
+        currentRotation = ClampRotation(currentRotation);
+
         transform.localRotation = Quaternion.Euler(currentRotation.x, 0.0f, 0.0f);
         transform.parent.rotation = Quaternion.Euler(0.0f, currentRotation.y, 0.0f);
-    }
-
-    private IEnumerator ImpulseCoroutine(Vector2 impulse, float duration)
-    {
-        Vector2 velocity = impulse;
-
-        // Parabolic motion:
-        // velocity_final = velocity_initial + acceleration * duration.
-        // velocity_final = -velocity_initial.
-        // acceleration = (-velocity_initial - velocity_initial) / duration.
-        Vector2 acceleration = (-2.0f * velocity) / duration;
-
-        float timer = 0.0f;
-        while (timer < duration)
-        {
-            currentRotation += velocity * Time.deltaTime;
-            currentRotation = ClampRotation(currentRotation);
-
-            velocity += acceleration * Time.deltaTime;
-            timer += Time.deltaTime;
-
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
     }
 
     private Vector3 ClampRotation(Vector3 rotation)

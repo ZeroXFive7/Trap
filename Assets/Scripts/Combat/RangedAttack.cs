@@ -34,7 +34,7 @@ public class RangedAttack : MonoBehaviour
         RaycastHit[] hits = Physics.RaycastAll(transform.position, transform.forward);
         for (int i = 0; i < hits.Length; ++i)
         {
-            CharacterBodyCollider colliderBody = hits[i].transform.GetComponent<CharacterBodyCollider>();
+            BodyCollider colliderBody = hits[i].transform.GetComponent<BodyCollider>();
             if (colliderBody == null)
             {
                 continue;
@@ -44,7 +44,7 @@ public class RangedAttack : MonoBehaviour
             if (colliderCharacter != this.character && !charactersHitThisAttack.Contains(colliderCharacter))
             {
                 charactersHitThisAttack.Add(colliderCharacter);
-                colliderCharacter.Movement.Impulse(transform.forward * RangedWeapon.KnockbackForce);
+                colliderCharacter.Movement.AddImpulse(transform.forward * RangedWeapon.KnockbackForce);
             }
         }
 

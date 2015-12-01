@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CharacterBodyCollider : MonoBehaviour
+public class BodyCollider : MonoBehaviour
 {
     public Character Character = null;
 }

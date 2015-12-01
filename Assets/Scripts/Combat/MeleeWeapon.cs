@@ -3,25 +3,6 @@ using System.Collections.Generic;
 
 public class MeleeWeapon : MonoBehaviour
 {
-    private class CharacterCollision
-    {
-        public Character Character;
-        public List<Vector3> CollisionPoints = new List<Vector3>();
-
-        public Vector3 CollisionCentroid
-        {
-            get
-            {
-                Vector3 centroid = Vector3.zero;
-                for (int i =0; i < CollisionPoints.Count; ++i)
-                {
-                    centroid += CollisionPoints[i];
-                }
-                return centroid / (float)CollisionPoints.Count;
-            }
-        }
-    };
-
     [Tooltip("X axis is angle from player forward vector.  Y axis is knockback angle from XZ plane.")]
     [SerializeField]
     private AnimationCurve knockbackPopAngleCurve;
@@ -30,6 +11,8 @@ public class MeleeWeapon : MonoBehaviour
     private AnimationCurve knockbackForceCurve;
     [SerializeField]
     private SpherecastCollider[] colliders = null;
+
+    public event System.Action<Shield, Vector3> CollidedWithShield;
 
     public AnimationCurve KnockbackPopAngleCurve
     {
@@ -47,11 +30,7 @@ public class MeleeWeapon : MonoBehaviour
         }
     }
 
-    public event System.Action<Character, Vector3> CollidedWithCharacter;
-
-    private List<CharacterCollision> characterCollisions = new List<CharacterCollision>();
-
-    public bool CanCollide
+    public bool CollidersEnabled
     {
         set
         {
@@ -65,54 +44,28 @@ public class MeleeWeapon : MonoBehaviour
 
     private void Awake()
     {
-        CanCollide = false;
+        CollidersEnabled = false;
+
+        for (int i = 0; i < colliders.Length; ++i)
+        {
+            colliders[i].Collision += OnCollision;
+        }
     }
 
-    private void Update()
+    private void OnDestroy()
     {
-        if (CollidedWithCharacter == null)
+        for (int i = 0; i < colliders.Length; ++i)
         {
-            // Someone must be listening to character collision events.
-            return;
+            colliders[i].Collision -= OnCollision;
         }
+    }
 
-        characterCollisions.Clear();
-
-        for (int colliderIndex = 0; colliderIndex < colliders.Length; ++colliderIndex)
+    private void OnCollision(Transform collider, Vector3 collisionPoint)
+    {
+        Shield shield = collider.GetComponent<Shield>();
+        if (shield != null && CollidedWithShield != null)
         {
-            RaycastHit[] collisions = colliders[colliderIndex].Collisions;
-            if (collisions == null)
-            {
-                continue;
-            }
-
-            for (int collisionIndex = 0; collisionIndex < collisions.Length; ++collisionIndex)
-            {
-                CharacterBodyCollider collidedCharacterBody = collisions[collisionIndex].transform.GetComponent<CharacterBodyCollider>();
-                if (collidedCharacterBody == null)
-                {
-                    // Can only hit characters.
-                    continue;
-                }
-
-                int existingCollisionIndex = characterCollisions.FindIndex(c => c.Character == collidedCharacterBody.Character);
-                if (existingCollisionIndex < 0)
-                {
-                    CharacterCollision newCharacterCollision = new CharacterCollision();
-                    newCharacterCollision.Character = collidedCharacterBody.Character;
-                    newCharacterCollision.CollisionPoints.Add(collisions[collisionIndex].point);
-                    characterCollisions.Add(newCharacterCollision);
-                }
-                else
-                {
-                    characterCollisions[existingCollisionIndex].CollisionPoints.Add(collisions[collisionIndex].point);
-                }
-            }
-        }
-
-        for (int characterCollisionIndex = 0; characterCollisionIndex < characterCollisions.Count; ++characterCollisionIndex)
-        {
-            CollidedWithCharacter(characterCollisions[characterCollisionIndex].Character, characterCollisions[characterCollisionIndex].CollisionCentroid);
+            CollidedWithShield(shield, collisionPoint);
         }
     }
 }

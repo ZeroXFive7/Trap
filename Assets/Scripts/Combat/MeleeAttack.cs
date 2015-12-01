@@ -35,6 +35,16 @@ public class MeleeAttack : MonoBehaviour
 
     public bool CharacterInAttackRange { get; private set; }
 
+    public void EnableMeleeColliders()
+    {
+        MeleeWeapon.CollidersEnabled = true;
+    }
+
+    public void DisableMeleeColliders()
+    {
+        MeleeWeapon.CollidersEnabled = false;
+    }
+
     public void Attack()
     {
         if (!enabled)
@@ -45,7 +55,8 @@ public class MeleeAttack : MonoBehaviour
         if ((Time.time - previousAttackTime) >= cooldown)
         {
             previousAttackTime = Time.time;
-            StartCoroutine(AttackCoroutine());
+            charactersHitThisAttack.Clear();
+            character.Animator.MeleeAttack();
         }
     }
 
@@ -53,7 +64,7 @@ public class MeleeAttack : MonoBehaviour
     {
         MeleeWeapon = Instantiate(prefab);
         MeleeWeapon.transform.SetParent(meleeWeaponOrigin, false);
-        MeleeWeapon.CollidedWithCharacter += OnWeaponCollidedWithCharacter;
+        MeleeWeapon.CollidedWithShield += OnWeaponCollidedWithShield;
 
         CharacterInAttackRange = false;
     }
@@ -83,7 +94,7 @@ public class MeleeAttack : MonoBehaviour
 
         for (int i = 0; i < hits.Length; ++i)
         {
-            CharacterBodyCollider characterBody = hits[i].transform.GetComponent<CharacterBodyCollider>();
+            BodyCollider characterBody = hits[i].transform.GetComponent<BodyCollider>();
             if (characterBody == null || characterBody.Character == this.character)
             {
                 continue;
@@ -94,40 +105,23 @@ public class MeleeAttack : MonoBehaviour
         }
     }
 
-    private void OnWeaponCollidedWithCharacter(Character other, Vector3 impactPoint)
+    private void OnWeaponCollidedWithShield(Shield shield, Vector3 impactPoint)
     {
-        if (other == character || charactersHitThisAttack.Contains(other))
+        Character otherCharacter = shield.Character;
+        if (otherCharacter == this.character || charactersHitThisAttack.Contains(otherCharacter))
         {
             return;
         }
 
-        charactersHitThisAttack.Add(other);
+        charactersHitThisAttack.Add(otherCharacter);
+        shield.Impact(impactPoint, 1.0f);
 
-        other.Health.AddImpactPoint(impactPoint);
-
-        Vector3 impactDirection = (other.transform.position - transform.position).normalized;//.normalized;
-       
+        Vector3 impactDirection = (otherCharacter.transform.position - transform.position).normalized;
         float angle = MathExtensions.AngleAroundAxis(transform.forward, impactDirection, transform.up);
         float popAngle = MeleeWeapon.KnockbackPopAngleCurve.Evaluate(angle);
         float knockbackForce = MeleeWeapon.KnockbackForceCurve.Evaluate(angle);
 
         Vector3 knockbackDirection = Quaternion.AngleAxis(-popAngle, transform.right) * Quaternion.AngleAxis(angle, transform.up) * transform.forward;
-        other.Movement.Impulse(knockbackDirection * knockbackForce);
-    }
-
-    private IEnumerator AttackCoroutine()
-    {
-        charactersHitThisAttack.Clear();
-        MeleeWeapon.CanCollide = true;
-        character.Animator.MeleeAttack();
-
-        float timer = 0.0f;
-        while (timer < duration)
-        {
-            yield return new WaitForSeconds(Time.deltaTime);
-            timer += Time.deltaTime;
-        }
-
-        MeleeWeapon.CanCollide = false;
+        otherCharacter.Movement.AddImpulse(knockbackDirection * knockbackForce);
     }
 }

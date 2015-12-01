@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
         // Move.
         Vector3 localMoveDirection = new Vector3(playerInput.GetAxis("Move Horizontal"), 0.0f, playerInput.GetAxis("Move Vertical"));
         Vector3 moveDirection = transform.TransformDirection(localMoveDirection);
-        Character.Movement.Move(moveDirection, playerInput.GetButtonDown("Sprint"));
+        Character.Movement.Move(moveDirection, playerInput.GetButton("Sprint"));
 
         // Aim.
         Character.Aiming.Aim(playerInput.GetAxis("Look Horizontal"), playerInput.GetAxis("Look Vertical"));

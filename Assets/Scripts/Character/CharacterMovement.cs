@@ -5,10 +5,6 @@ using System.Collections.Generic;
 [RequireComponent(typeof(CharacterController))]
 public class CharacterMovement : MonoBehaviour
 {
-    [Header("Mass")]
-    [SerializeField]
-    private float mass = 1.0f;
-
     [Header("Locomotion")]
     [SerializeField]
     private float locomotionSpeed = 10.0f;
@@ -16,8 +12,6 @@ public class CharacterMovement : MonoBehaviour
     private float locomotionFallingAcceleration = 10.0f;
 
     [Header("Impulse")]
-    [SerializeField]
-    private float minImpulseMagnitude = 0.1f;
     [SerializeField]
     private float impulseDeceleration = 10.0f;
 
@@ -47,9 +41,7 @@ public class CharacterMovement : MonoBehaviour
     private Vector3 locomotionVelocity = Vector3.zero;
 
     private Vector3 jumpVelocity = Vector3.zero;
-
-    private List<Vector3> impulseVelocities = new List<Vector3>();
-    private List<int> impulseRemovalList = new List<int>();
+    private ImpulseSolver impulses = new ImpulseSolver();
 
     private float dashCooldownTimer = 0.0f;
 
@@ -59,9 +51,7 @@ public class CharacterMovement : MonoBehaviour
         locomotionVelocity = Vector3.zero;
 
         jumpVelocity = Vector3.zero;
-
-        impulseVelocities.Clear();
-        impulseRemovalList.Clear();
+        impulses.Clear();
 
         transform.position = position;
     }
@@ -83,28 +73,37 @@ public class CharacterMovement : MonoBehaviour
     {
         if (dashCooldownTimer <= 0.0f)
         {
-            Impulse(direction * dashSpeed);
+            AddImpulse(direction * dashSpeed);
             dashCooldownTimer = dashCooldown;
         }
     }
 
-    public void Impulse(Vector3 force)
+    public void AddImpulse(Vector3 initialVelocity)
     {
-        impulseVelocities.Add(force);
+        impulses.AddImpulseAndDeceleration(initialVelocity, impulseDeceleration);
     }
 
     private void Update()
     {
-        Vector3 movementVelocity = Vector3.zero;
-
         jumpVelocity += gravityAcceleration * Time.deltaTime;
 
-        movementVelocity += jumpVelocity;
-        movementVelocity += UpdateLocomotionVelocity();
-        movementVelocity += UpdateImpulseVelocity();
+        if (character.Collider.isGrounded)
+        {
+            locomotionVelocity = desiredLocomotionVelocity;
+            character.Animator.LinearMovementSpeed = desiredLocomotionVelocity.magnitude;
+        }
+        else
+        {
+            locomotionVelocity += desiredLocomotionVelocity.normalized * locomotionFallingAcceleration * Time.deltaTime;
+            character.Animator.LinearMovementSpeed = 0.0f;
+        }
+        desiredLocomotionVelocity = Vector3.zero;
+
+        impulses.Update(Time.deltaTime);
 
         // Actually move body and resolve collisions.
-        character.Collider.Move(movementVelocity * Time.deltaTime);
+        Vector3 velocity = jumpVelocity + locomotionVelocity + impulses.TotalVelocity;
+        character.Collider.Move(velocity * Time.deltaTime);
 
         if (character.Collider.isGrounded)
         {
@@ -112,47 +111,5 @@ public class CharacterMovement : MonoBehaviour
         }
 
         dashCooldownTimer = Mathf.Max(0.0f, dashCooldownTimer - Time.deltaTime);
-    }
-
-    private Vector3 UpdateLocomotionVelocity()
-    {
-        if (character.Collider.isGrounded)
-        {
-            locomotionVelocity = desiredLocomotionVelocity;
-        }
-        else
-        {
-            locomotionVelocity += desiredLocomotionVelocity.normalized * locomotionFallingAcceleration * Time.deltaTime;
-        }
-        desiredLocomotionVelocity = Vector3.zero;
-
-        return locomotionVelocity;
-    }
-
-    private Vector3 UpdateImpulseVelocity()
-    {
-        Vector3 impulseVelocity = Vector3.zero;
-
-        impulseRemovalList.Clear();
-        for (int i = 0; i < impulseVelocities.Count; ++i)
-        {
-            float magnitude = impulseVelocities[i].magnitude;
-            if (magnitude > minImpulseMagnitude)
-            {
-                impulseVelocity += impulseVelocities[i];
-                impulseVelocities[i] = impulseVelocities[i].normalized * Mathf.Max(0.0f, magnitude - impulseDeceleration * Time.deltaTime);
-            }
-            else
-            {
-                impulseRemovalList.Add(i);
-            }
-        }
-
-        for (int i = impulseRemovalList.Count - 1; i >= 0; --i)
-        {
-            impulseVelocities.RemoveAt(i);
-        }
-
-        return impulseVelocity;
     }
 }

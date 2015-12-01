@@ -4,7 +4,7 @@ using System.Collections;
 public class Character : MonoBehaviour
 {
     [SerializeField]
-    private CharacterHealth health = null;
+    private Health health = null;
     [SerializeField]
     private CharacterMovement movement = null;
     [SerializeField]
@@ -16,11 +16,13 @@ public class Character : MonoBehaviour
     [SerializeField]
     private RangedAttack rangedAttack = null;
     [SerializeField]
+    private Shield shield = null;
+    [SerializeField]
     private CharacterAnimator animator = null;
     [SerializeField]
     private new MeshRenderer renderer = null;
 
-    public CharacterHealth Health
+    public Health Health
     {
         get { return health; }
     }
@@ -48,6 +50,11 @@ public class Character : MonoBehaviour
     public RangedAttack RangedAttack
     {
         get { return rangedAttack; }
+    }
+
+    public Shield Shield
+    {
+        get { return shield; }
     }
 
     public CharacterAnimator Animator

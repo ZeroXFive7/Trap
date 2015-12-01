@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
-public class CharacterHealth : MonoBehaviour
+public class Health : MonoBehaviour
 {
     [SerializeField]
     private float maxHitPoints = 10.0f;
@@ -12,9 +11,7 @@ public class CharacterHealth : MonoBehaviour
 
     [Header("Component References")]
     [SerializeField]
-    CharacterMovement steering = null;
-
-    private List<Vector3> impactPoints = new List<Vector3>();
+    Character character = null;
 
     public float HitPoints { get; private set; }
 
@@ -33,13 +30,15 @@ public class CharacterHealth : MonoBehaviour
         IsDead = false;
         HitPoints = initialHitPoints;
 
-        steering.SnapToPosition(spawnPoint.position);
+        character.Movement.SnapToPosition(spawnPoint.position);
     }
 
     public void Die()
     {
         HitPoints = 0.0f;
         IsDead = true;
+
+        character.Shield.ClearImpacts();
     }
 
     public void Respawn()
@@ -48,12 +47,6 @@ public class CharacterHealth : MonoBehaviour
 
         Transform spawnPoint = GameplayManager.Instance.CurrentLevel.GetRandomSpawnPoint();
         Spawn(spawnPoint);
-    }
-
-    public void AddImpactPoint(Vector3 point)
-    {
-        point = transform.InverseTransformPoint(point);
-        impactPoints.Add(point);
     }
 
     private void Start()
@@ -67,15 +60,6 @@ public class CharacterHealth : MonoBehaviour
         if (other.gameObject.LayerIsInLayerMask(safeVolumeLayers))
         {
             Respawn();
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.gray;
-        foreach (Vector3 point in impactPoints)
-        {
-            Gizmos.DrawSphere(transform.TransformPoint(point), 0.1f);
         }
     }
 }
