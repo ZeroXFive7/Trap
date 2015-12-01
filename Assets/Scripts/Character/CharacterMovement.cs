@@ -102,8 +102,9 @@ public class CharacterMovement : MonoBehaviour
         impulses.Update(Time.deltaTime);
 
         // Actually move body and resolve collisions.
-        Vector3 velocity = jumpVelocity + locomotionVelocity + impulses.TotalVelocity;
-        character.Collider.Move(velocity * Time.deltaTime);
+        Vector3 velocity = (jumpVelocity + locomotionVelocity) * Time.deltaTime;
+        velocity += impulses.TotalVelocityThisFrame;
+        character.Collider.Move(velocity);
 
         if (character.Collider.isGrounded)
         {

@@ -43,7 +43,7 @@ public class CharacterAiming : MonoBehaviour
     {
         impulses.Update(Time.deltaTime);
 
-        currentRotation += (Vector2)impulses.TotalVelocity * Time.deltaTime;
+        currentRotation += (Vector2)impulses.TotalVelocityThisFrame;
         currentRotation = ClampRotation(currentRotation);
 
         transform.localRotation = Quaternion.Euler(currentRotation.x, 0.0f, 0.0f);

@@ -8,13 +8,16 @@ public class ImpulseSolver
         public Vector3 InitialVelocity;
         public Vector3 Acceleration;
         public float Timer;
+        public float PreviousTimer;
         public float Duration;
 
-        public Vector3 CurrentVelocity
+        public Vector3 CurrentVelocityThisFrame
         {
             get
             {
-                return InitialVelocity + Acceleration * Timer;
+                Vector3 previousDisplacement = InitialVelocity * PreviousTimer + 0.5f * Acceleration * PreviousTimer * PreviousTimer;
+                Vector3 nextDisplacement = InitialVelocity * Timer + 0.5f * Acceleration * Timer * Timer;
+                return nextDisplacement - previousDisplacement;
             }
         }
     };
@@ -52,14 +55,14 @@ public class ImpulseSolver
         impulses.Clear();
     }
 
-    public Vector3 TotalVelocity
+    public Vector3 TotalVelocityThisFrame
     {
         get
         {
             Vector3 impulseVector = Vector3.zero;
             for (int i = 0; i < impulses.Count; ++i)
             {
-                impulseVector += impulses[i].CurrentVelocity;
+                impulseVector += impulses[i].CurrentVelocityThisFrame;
             }
             return impulseVector;
         }
@@ -70,11 +73,13 @@ public class ImpulseSolver
         removalIndices.Clear();
         for (int i = 0; i < impulses.Count; ++i)
         {
-            impulses[i].Timer = Mathf.Min(impulses[i].Duration, impulses[i].Timer + deltaTime);
             if (impulses[i].Timer >= impulses[i].Duration)
             {
                 removalIndices.Add(i);
             }
+
+            impulses[i].PreviousTimer = impulses[i].Timer;
+            impulses[i].Timer = Mathf.Min(impulses[i].Duration, impulses[i].Timer + deltaTime);
         }
 
         for (int i = removalIndices.Count - 1; i >= 0; --i)
@@ -90,6 +95,7 @@ public class ImpulseSolver
             InitialVelocity = velocity,
             Acceleration = acceleration,
             Timer = 0.0f,
+            PreviousTimer = 0.0f,
             Duration = duration
         });
     }
