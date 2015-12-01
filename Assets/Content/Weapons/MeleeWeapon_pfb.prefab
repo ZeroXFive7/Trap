@@ -300,17 +300,17 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - time: -30.0079327
-      value: 14.9775982
+      value: 34.7252083
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     - time: .0188402403
-      value: 25.2065907
+      value: 44.9542007
       inSlope: -.00238418579
       outSlope: -.00238418579
       tangentMode: 0
     - time: 30.0365162
-      value: 14.8796463
+      value: 34.6272583
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -450,11 +450,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: knockbackForceCurve.m_Curve.Array.data[0].value
-      value: 14.9775982
+      value: 34.7252083
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: knockbackForceCurve.m_Curve.Array.data[1].value
-      value: 25.2065907
+      value: 44.9542007
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: knockbackForceCurve.m_Curve.Array.data[1].time
@@ -470,7 +470,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: knockbackForceCurve.m_Curve.Array.data[2].value
-      value: 14.8796463
+      value: 34.6272583
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: knockbackForceCurve.m_Curve.Array.data[2].time
