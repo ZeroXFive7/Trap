@@ -44,7 +44,7 @@ public class RangedAttack : MonoBehaviour
             if (colliderCharacter != this.character && !charactersHitThisAttack.Contains(colliderCharacter))
             {
                 charactersHitThisAttack.Add(colliderCharacter);
-                colliderCharacter.Movement.AddImpulse(transform.forward * RangedWeapon.KnockbackForce);
+                colliderCharacter.Movement.AddImpulse(transform.forward * RangedWeapon.KnockbackForce, RangedWeapon.RecoilDuration);
             }
         }
 

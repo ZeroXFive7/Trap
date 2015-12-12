@@ -64,7 +64,7 @@ public class MeleeAttack : MonoBehaviour
     {
         MeleeWeapon = Instantiate(prefab);
         MeleeWeapon.transform.SetParent(meleeWeaponOrigin, false);
-        MeleeWeapon.CollidedWithShield += OnWeaponCollidedWithShield;
+        MeleeWeapon.CollidedWithCharacter += OnWeaponCollidedWithCharacter;
 
         CharacterInAttackRange = false;
     }
@@ -105,23 +105,21 @@ public class MeleeAttack : MonoBehaviour
         }
     }
 
-    private void OnWeaponCollidedWithShield(Shield shield, Vector3 impactPoint)
+    private void OnWeaponCollidedWithCharacter(Character character, Vector3 impactPoint)
     {
-        Character otherCharacter = shield.Character;
-        if (otherCharacter == this.character || charactersHitThisAttack.Contains(otherCharacter))
+        if (character == this.character || charactersHitThisAttack.Contains(character))
         {
             return;
         }
 
-        charactersHitThisAttack.Add(otherCharacter);
-        shield.Impact(impactPoint, 1.0f);
+        charactersHitThisAttack.Add(character);
 
-        Vector3 impactDirection = (otherCharacter.transform.position - transform.position).normalized;
+        Vector3 impactDirection = (character.transform.position - transform.position).normalized;
         float angle = MathExtensions.AngleAroundAxis(transform.forward, impactDirection, transform.up);
         float popAngle = MeleeWeapon.KnockbackPopAngleCurve.Evaluate(angle);
         float knockbackForce = MeleeWeapon.KnockbackForceCurve.Evaluate(angle);
 
         Vector3 knockbackDirection = Quaternion.AngleAxis(-popAngle, transform.right) * Quaternion.AngleAxis(angle, transform.up) * transform.forward;
-        otherCharacter.Movement.AddImpulse(knockbackDirection * knockbackForce);
+        character.Movement.AddImpulse(knockbackDirection * knockbackForce);
     }
 }

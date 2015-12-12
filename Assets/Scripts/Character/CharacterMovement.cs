@@ -83,6 +83,11 @@ public class CharacterMovement : MonoBehaviour
         impulses.AddImpulseAndDeceleration(initialVelocity, impulseDeceleration);
     }
 
+    public void AddImpulse(Vector3 initialVelocity, float duration)
+    {
+        impulses.AddImpulseForDuration(initialVelocity, duration);
+    }
+
     private void Update()
     {
         jumpVelocity += gravityAcceleration * Time.deltaTime;

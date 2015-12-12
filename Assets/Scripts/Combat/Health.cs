@@ -37,8 +37,6 @@ public class Health : MonoBehaviour
     {
         HitPoints = 0.0f;
         IsDead = true;
-
-        character.Shield.ClearImpacts();
     }
 
     public void Respawn()

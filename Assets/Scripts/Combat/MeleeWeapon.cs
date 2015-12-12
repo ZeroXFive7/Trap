@@ -12,7 +12,7 @@ public class MeleeWeapon : MonoBehaviour
     [SerializeField]
     private SpherecastCollider[] colliders = null;
 
-    public event System.Action<Shield, Vector3> CollidedWithShield;
+    public event System.Action<Character, Vector3> CollidedWithCharacter;
 
     public AnimationCurve KnockbackPopAngleCurve
     {
@@ -62,10 +62,10 @@ public class MeleeWeapon : MonoBehaviour
 
     private void OnCollision(Transform collider, Vector3 collisionPoint)
     {
-        Shield shield = collider.GetComponent<Shield>();
-        if (shield != null && CollidedWithShield != null)
+        BodyCollider body = collider.GetComponent<BodyCollider>();
+        if (body != null && CollidedWithCharacter != null)
         {
-            CollidedWithShield(shield, collisionPoint);
+            CollidedWithCharacter(body.Character, collisionPoint);
         }
     }
 }
